@@ -1,2 +1,2 @@
 # OSP_TODO
-Open Software Platform React Native ToDo App  
+Open Software Platform React Native ToDo List App  
