@@ -1,18 +1,14 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
-
 import TodoListItem from './TodoListItem';
 
-class TodoList extends React.Component {
-  render() {
-
+const TodoList = (props) => {
     return (
-    <ScrollView contentContainerStyle={styles.listContainer}>
-      <TodoListItem></TodoListItem>
-    </ScrollView>
+      <ScrollView contentContainerStyle={styles.listContainer}>
+        <TodoListItem text={props.text}></TodoListItem>
+      </ScrollView>
   );
-  }
-};
+}
 
 const styles = StyleSheet.create({
   listContainer: {
