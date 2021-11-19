@@ -1,43 +1,51 @@
 import React from 'react';
+import { render } from 'react-dom';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const CategoriesView = () => {
-    return (
+class CategoriesView extends React.Component {
+    render() {
+      return (
+    
         <View style={styles.overviewContainer}>
             <View style={styles.taskCircleTitle}>
                 <Text style={styles.todaysTasks}>Today's Tasks</Text>
             </View>
-            <TouchableOpacity style={styles.upperRowContainer}>
+            <View style={styles.upperRowContainer}>
                 <View style={styles.taskCompletion}>
                     
                     <View style={styles.taskCircle}></View>
                 </View>
-                <View style={styles.upperCategoryBox}>
+                <TouchableOpacity style={styles.upperCategoryBox}>
                     <Text style={styles.categoryName}>Incomplete</Text>
                     <Text style={styles.numOfTasks}>3</Text>
-                </View>
-                <View style={styles.upperCategoryBox}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.upperCategoryBox}>
                     <Text style={styles.categoryName}>Completed</Text>
                     <Text style={styles.numOfTasks}>0</Text>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity style={styles.lowerRowContainer}>
-                <View style={styles.lowerCategoryBox}>
+            <View style={styles.lowerRowContainer}>
+                <TouchableOpacity style={styles.lowerCategoryBox}>
                     <Text style={styles.categoryName}>All</Text>
                     <Text style={styles.numOfTasks}>8</Text>
-                </View>
-                <View style={styles.lowerCategoryBox}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.lowerCategoryBox}>
                     <Text style={styles.categoryName}>HW</Text>
                     <Text style={styles.numOfTasks}>2</Text>
-                </View>
-                <View style={styles.lowerCategoryBox}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.lowerCategoryBox}>
                     <Text style={styles.categoryName}>Priority</Text>
-                </View>
-            </TouchableOpacity>
-        </View>
-    );
-}
+                </TouchableOpacity>
+            </View>
+        </View>        
+        );
+    }
+    incompTask() {
+    console.log('Incomplete task Button pressed')
+    }
+};
+
 
 const styles = StyleSheet.create({
     overviewContainer: {
