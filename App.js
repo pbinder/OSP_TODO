@@ -1,11 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Text,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
   View,
-  TextInput,
 } from 'react-native';
 
 import TodoInsert from './components/TodoInsert';
@@ -13,14 +10,36 @@ import TodoList from './components/TodoList';
 import TopBar from './components/TopBar';
 import CategoriesView from './components/CategoriesView';
 
-const App = () => {
+import db from './firebase';
+import firebase from 'firebase';
 
-  const [task, setTask] = useState();
+function App() {
+
+  const [task, setTask] = useState('');
   const [taskItems, setTaskItems] = useState([]);
 
+  //variables for the add new task modal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  //when the app loads, fetch the database
+  useEffect(() => {
+    db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+      //setTaskItems(snapshot.docs.map(doc => ({id: doc.id, todo: doc.data().todo})))
+      setTaskItems(snapshot.docs.map(doc => doc.data().todo))
+    })
+  }, []);
+
   const handleAddTask = () => {
+    //event.preventDefault();
+    db.collection('todos').add({
+      todo: task,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+
     setTaskItems([...taskItems, task])
-    setTask(null);
+    setTask('');
+    setModalVisible(!modalVisible);
+    //console.log(todos);
   }
 
   return (
@@ -30,7 +49,13 @@ const App = () => {
         <CategoriesView></CategoriesView>
       </View>
       <View style={styles.list}>
-          <TodoInsert> </TodoInsert>
+          <TodoInsert 
+            modalVisible={modalVisible} 
+            setModalVisible={setModalVisible}
+            setTask = {setTask}
+            handleAddTask = {handleAddTask}
+          > 
+          </TodoInsert>
         <View style={styles.card}>
         {
         taskItems.map((item, index) => {
@@ -39,14 +64,6 @@ const App = () => {
         }
         </View>
       </View>
-
-      <TouchableOpacity style={styles.addNewContainer} onPress={() => handleAddTask()}>
-        <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
-        </View>
-        <TextInput style={styles.addTaskWrapper} placeholder={'Write a new task'} onChangeText={text => setTask(text)}/>
-      </TouchableOpacity>
-
     </SafeAreaView>
   );
 };
@@ -83,33 +100,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 24,
     marginLeft: 20,
-  },
-  addNewContainer: {
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  addWrapper: {
-    height: 37,
-    width: 37,
-    borderRadius: 50,
-    backgroundColor: '#C0C0C0',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addTaskWrapper: {
-    width: '80%',
-    height: 40,
-    margin: 5,
-    backgroundColor: '#C0C0C0',
-    borderRadius: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#fff',
-    borderWidth: 1,
-  },
-  addText: {
-    fontSize: 24,
   }
 });
 

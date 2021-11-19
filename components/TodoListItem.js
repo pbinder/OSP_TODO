@@ -1,17 +1,21 @@
 import { circle } from 'cli-spinners';
 import { rosybrown } from 'color-name';
-import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import {
+  View, 
+  StyleSheet, 
+  Text, 
+  TouchableOpacity,
+} from 'react-native';
 
 const TodoListItem = (props) => {
-  //render() {
     return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={()=>console.log('You touched me')} underlayColor={'#AAA'}>
       <View style={styles.itemLeft}>
           <TouchableOpacity style={styles.circle}></TouchableOpacity>
       </View>
       <Text style={styles.text}>{props.text}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
