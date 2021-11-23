@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Moment from 'moment';
-
+import { StatusBar } from 'expo-status-bar';
 
 class TopBar extends React.Component {
   render() {
@@ -27,21 +27,19 @@ class TopBar extends React.Component {
     console.log("Event for Edit Page Menu open Button Pressed")
   }
 
-
-
 }
 
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
-    height: 70,
+    height: 55,
     flexDirection: 'row', // row
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'space-between', // center, space-around
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 30
+    paddingTop: StatusBar.currentHeight
   },
   circle: {
     width: 20,
@@ -56,6 +54,7 @@ const styles = StyleSheet.create({
     height: 30,
     color: '#FFFFFF',
     marginRight: 5,
+    marginTop: 10
   },
 });
 
