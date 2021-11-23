@@ -25,8 +25,9 @@ const TodoInsert = ({modalVisible, setModalVisible, setTask, handleAddTask}) => 
             <View style={styles.modalView}>
               <Text style={styles.modalText}>TO DO LIST</Text>
               <TouchableOpacity style={styles.addNewContainer}>
-                <TextInput style={styles.addTaskWrapper} placeholder={'Write a new task'} onChangeText={text => setTask(text)}/>
+                <TextInput style={styles.addTaskWrapper} placeholder={'   Write a new task...'} onChangeText={text => setTask(text)}/>
               </TouchableOpacity>
+              
               <View style={styles.buttonsWrapper}>
               <Pressable
                   style={[styles.buttonModal, styles.buttonClose]}
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 10,
   },
   modalText: {
     marginBottom: 15,

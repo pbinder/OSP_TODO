@@ -15,37 +15,36 @@ class CategoriesView extends React.Component {
                     
                     <View style={styles.taskCircle}></View>
                 </View>
-                <TouchableOpacity style={styles.upperCategoryBox}>
+                <TouchableOpacity style={styles.upperCategoryBox} onPress={this.categButton}>
                     <Text style={styles.categoryName}>Incomplete</Text>
                     <Text style={styles.numOfTasks}>3</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.upperCategoryBox}>
+                <TouchableOpacity style={styles.upperCategoryBox} onPress={this.categButton}>
                     <Text style={styles.categoryName}>Completed</Text>
                     <Text style={styles.numOfTasks}>0</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.lowerRowContainer}>
-                <TouchableOpacity style={styles.lowerCategoryBox}>
+                <TouchableOpacity style={styles.lowerCategoryBox} onPress={this.categButton}>
                     <Text style={styles.categoryName}>All</Text>
                     <Text style={styles.numOfTasks}>8</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.lowerCategoryBox}>
+                <TouchableOpacity style={styles.lowerCategoryBox} onPress={this.categButton}>
                     <Text style={styles.categoryName}>HW</Text>
                     <Text style={styles.numOfTasks}>2</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.lowerCategoryBox}>
+                <TouchableOpacity style={styles.lowerCategoryBox} onPress={this.categButton}>
                     <Text style={styles.categoryName}>Priority</Text>
                 </TouchableOpacity>
             </View>
         </View>        
         );
     }
-    incompTask() {
-    console.log('Incomplete task Button pressed')
+    categButton() {
+    console.log('Category task Button pressed')
     }
 };
-
 
 const styles = StyleSheet.create({
     overviewContainer: {
@@ -98,6 +97,7 @@ const styles = StyleSheet.create({
         shadowColor: '#171717',
         justifyContent: 'center',
         alignItems: 'center',
+        elevation: 3,
     },
     lowerCategoryBox: {
         width: 115,
