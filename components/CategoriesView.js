@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 class CategoriesView extends React.Component {
