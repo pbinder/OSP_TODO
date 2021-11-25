@@ -9,6 +9,7 @@ import {
 
 import db from '../firebase';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import moment from 'moment';
 
 export default function TodoListItem({taskItems}) {
 
@@ -16,21 +17,29 @@ export default function TodoListItem({taskItems}) {
         console.log('This row opened', rowKey);
     };
 
+    const completeTask = task => {
+        task.completed = !task.completed;
+        console.log('Complete Task', task);
+    };
+
     const renderItem = data => (
         <TouchableHighlight
-            onPress={() => console.log('You touched me')}
+            onPress={() => completeTask(data.item)}
             style={styles.rowFront}
             underlayColor={'#AAA'}>
             <View style={styles.subcontainer}>
                 <View style={styles.itemLeft}>
-                    <TouchableOpacity style={styles.circle}onPress={() => console.log('circle pressed')}></TouchableOpacity>
+                    <TouchableOpacity style={styles.circle}onPress={() => completeTask(data.item)}></TouchableOpacity>
                 </View>
-                <Text style={styles.text}>{data.item.text}</Text>
+                <View style={styles.labelContainer}>
+                    <Text style={[styles.text, data.item.completed ? styles.completedTaskText : styles.notCompleted]}>{data.item.name}</Text>
+                    <Text style={styles.dateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
+                </View>
             </View>
         </TouchableHighlight>
     );
 
-    const renderHiddenItem = (data, rowMap, rowKey) => (
+    const renderHiddenItem = (data) => (
         <View style={styles.rowBack}>
             <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]}>
                 <Text style={styles.backTextWhite}>Edit</Text>
@@ -127,10 +136,23 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         right: 0,
     },
+    labelContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginLeft: 25,
+    },    
     text: {
         fontWeight: '500',
         fontSize: 17,
-        marginVertical: 15,
         width: '100%',
+    },
+    completedTaskText: {
+        textDecorationLine: 'line-through',
+    },
+    notCompleted: {
+    },
+    dateText: {
+        fontWeight: '400',
+        fontSize: 14,
     }
 });

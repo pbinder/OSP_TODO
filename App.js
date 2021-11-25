@@ -15,8 +15,6 @@ import db from './firebase';
 import firebase from 'firebase';
 
 function App() {
-
-  const [task, setTask] = useState('');
   const [taskItems, setTaskItems] = useState([]);
 
   //variables for the add new task modal
@@ -25,18 +23,28 @@ function App() {
   //when the app loads, fetch the database
   useEffect(() => {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      setTaskItems(snapshot.docs.map(doc => ({id: doc.id, text: doc.data().todo})))
+      setTaskItems(snapshot.docs.map(doc => ({
+        id: doc.id, 
+        name: doc.data().name, 
+        date: doc.data().date,
+        category: doc.data().category,
+        note: doc.data().note,
+        completed: doc.data().completed
+      })))
     })
   }, []);
 
-  const handleAddTask = () => {
+  const handleAddTask = (task) => {
     db.collection('todos').add({
-      todo: task,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      name: task.name,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      date: task.date,
+      category: task.category,
+      note:task.note,
+      completed: task.completed
     })
 
     setTaskItems([...taskItems, task])
-    setTask('');
     setModalVisible(!modalVisible);
   }
 
@@ -50,7 +58,6 @@ function App() {
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
-          setTask = {setTask}
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>
