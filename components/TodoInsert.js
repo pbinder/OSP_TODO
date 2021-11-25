@@ -16,6 +16,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask}) {
   const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
@@ -28,6 +29,12 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
     setDate(currentDate);
   };
 
+  const onChangeTime = (event, selectedTime) => {
+    const currentTime = selectedTime || time;
+    setShow(Platform.OS === 'ios');
+    setTime(currentTime);
+  };
+
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
@@ -37,8 +44,19 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
     showMode('date');
   };
   
+  const showTimepicker = () => {
+    showMode('time');
+  };
+  
   const setTaskObject = () => {
-    const task = {name: name, date: date, category: category, note:note }
+    console.log("time", time)
+    const task = {
+      name: name, 
+      date: time, 
+      category: category, 
+      note:note,
+      completed: false 
+    }
     handleAddTask(task);
   };
 
@@ -55,10 +73,16 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
         >
           <View style={styles.centerModalView}>
             <View style={styles.modalView}>
+            <Text style={styles.header}>
+            Add new task
+            </Text>
               <TouchableOpacity style={styles.addNewContainer}>
-                <TextInput style={styles.addTaskWrapper} placeholder={'Write a new task...'} onChangeText={text => setName(text)}/>
+                <TextInput style={styles.addTaskWrapper} placeholder={'Name'} onChangeText={text => setName(text)}/>
               </TouchableOpacity>
-
+            <View style={styles.dateStyle}>
+              <Text style={styles.date}>
+                  Date:
+               </Text>
               <Text  
                 style={styles.datepicker} 
                 editable={false}
@@ -66,6 +90,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 onPress={showDatepicker} >
                   {Moment(date).format('YYYY/MM/DD')}
                </Text>
+               
               {show && (
                 <DateTimePicker
                 value={date}
@@ -76,6 +101,31 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 onChange={onChangeDate}
                 />
                 )}
+                </View>
+
+            <View style={styles.dateStyle}>
+              <Text style={styles.date}>
+                  Time:
+               </Text>
+              <Text  
+                style={styles.datepicker} 
+                editable={false}
+                placeholder={'Select time!'}  
+                onPress={showTimepicker} >
+                  {Moment(time).format('hh:mm:ss')}
+               </Text>
+              {show && (
+                <DateTimePicker
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                minimumDate={new Date()}
+                display="default"
+                onChange={onChangeTime}
+                />
+                )}
+              </View>
+
 
                 <SelectDropdown
                   data={Categories}
@@ -103,7 +153,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 />
 
               <TouchableOpacity style={styles.addNewContainer}>
-                <TextInput style={styles.addTaskWrapper} placeholder={'Add a note'} onChangeText={text => setNote(text)}/>
+                <TextInput style={styles.addTaskWrapper} placeholder={'Add a note...'} onChangeText={text => setNote(text)}/>
               </TouchableOpacity>
                         
               <View style={styles.buttonsWrapper}>
@@ -162,9 +212,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
+  header: {
+    fontSize: 18,
+  },
+  date: {
+    fontSize: 15,
+    marginRight: 10
+  },
   buttonsWrapper: {
     marginTop: 10,
     flexDirection: 'row',
+  },
+  dateStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   button: {
     marginLeft: 10,
@@ -226,9 +287,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#444",
   },
-  addText: {
-    fontSize: 24,
-  },
   dropdown1BtnStyle: {
     width: "60%",
     height: 40,
@@ -237,11 +295,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#444",
   },
-  dropdown1BtnTxtStyle: { color: "#444", textAlign: "left" },
+  dropdown1BtnTxtStyle: { 
+    fontSize: 16,
+    color: "#444", 
+    textAlign: "left" 
+  },
   dropdown1DropdownStyle: { backgroundColor: "#EFEFEF" },
   dropdown1RowStyle: {
     backgroundColor: "#EFEFEF",
     borderBottomColor: "#C5C5C5",
   },
-  dropdown1RowTxtStyle: { color: "#444", textAlign: "left" },
+  dropdown1RowTxtStyle: { 
+    fontSize: 16,
+    color: "#444", 
+    textAlign: "left" 
+  },
 });

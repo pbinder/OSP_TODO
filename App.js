@@ -28,7 +28,8 @@ function App() {
         name: doc.data().name, 
         date: doc.data().date,
         category: doc.data().category,
-        note: doc.data().note
+        note: doc.data().note,
+        completed: doc.data().completed
       })))
     })
   }, []);
@@ -39,7 +40,8 @@ function App() {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       date: task.date,
       category: task.category,
-      note:task.note
+      note:task.note,
+      completed: task.completed
     })
 
     setTaskItems([...taskItems, task])

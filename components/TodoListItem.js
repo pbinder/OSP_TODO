@@ -17,18 +17,23 @@ export default function TodoListItem({taskItems}) {
         console.log('This row opened', rowKey);
     };
 
+    const completeTask = task => {
+        task.completed = !task.completed;
+        console.log('Complete Task', task);
+    };
+
     const renderItem = data => (
         <TouchableHighlight
-            onPress={() => console.log('You touched me')}
+            onPress={() => completeTask(data.item)}
             style={styles.rowFront}
             underlayColor={'#AAA'}>
             <View style={styles.subcontainer}>
                 <View style={styles.itemLeft}>
-                    <TouchableOpacity style={styles.circle}onPress={() => console.log('circle pressed')}></TouchableOpacity>
+                    <TouchableOpacity style={styles.circle}onPress={() => completeTask(data.item)}></TouchableOpacity>
                 </View>
                 <View style={styles.labelContainer}>
-                    <Text style={styles.text}>{data.item.name}</Text>
-                    <Text style={styles.dateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')}</Text>
+                    <Text style={[styles.text, data.item.completed ? styles.completedTaskText : styles.notCompleted]}>{data.item.name}</Text>
+                    <Text style={styles.dateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                 </View>
             </View>
         </TouchableHighlight>
@@ -140,6 +145,11 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 17,
         width: '100%',
+    },
+    completedTaskText: {
+        textDecorationLine: 'line-through',
+    },
+    notCompleted: {
     },
     dateText: {
         fontWeight: '400',
