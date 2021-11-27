@@ -1,25 +1,24 @@
-import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import React from "react";
+import { StyleSheet, Text, Pressable, View } from "react-native";
+import {openSideMenu} from './TopBar';
+import Modal from 'react-native-modal';
 
-
-export default function wingpage ({modalVisible, setModalVisible}) {
-    
+export default function WingPage ({wingPageVisible, setWingPageVisible}) {
+      
       return (
         <View style={styles.centeredView}>
             <Modal
-            animationType="slide"
+            animationIn={'slideInLeft'}
+            animationOut={'slideOutLeft'}
             transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-            }}
-      >
+            isVisible={wingPageVisible}
+            onRequestClose={() => {setWingPageVisible(!wingPageVisible);}}>
+
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                 <Text style={styles.modalText}>Wing page Modal</Text>
                 <Pressable style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
+                        onPress={() => setWingPageVisible(!wingPageVisible)}>          
                         
                         <Text style={styles.textStyle}>Hide Modal</Text>
                 
@@ -27,9 +26,6 @@ export default function wingpage ({modalVisible, setModalVisible}) {
                 </View>
               </View>
             </Modal>
-            <Pressable>
-                //WHERE I LINK TO THE BUTTON ON THE UPPER LEFT!!!
-            </Pressable>
         </View>
     );
   };
@@ -39,7 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,

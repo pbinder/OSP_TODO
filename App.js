@@ -6,6 +6,7 @@ import {
   StatusBar,
 } from 'react-native';
 
+
 import TodoInsert from './components/TodoInsert';
 import TodoListItem from './components/TodoListItem';
 import TopBar from './components/TopBar';
@@ -13,9 +14,13 @@ import CategoriesView from './components/CategoriesView';
 
 import db from './firebase';
 import firebase from 'firebase';
+import WingPage from './components/WingPage';
 
 function App() {
   const [taskItems, setTaskItems] = useState([]);
+
+  //variables for wing page
+  const [wingPageVisible, setWingPageVisible] = useState(false);
 
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +55,17 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TopBar></TopBar>
+      <WingPage
+          wingPageVisible={wingPageVisible} 
+          setWingPageVisible={setWingPageVisible} >
+      </WingPage>
+      
+      <TopBar
+        wingPageVisible={wingPageVisible} 
+        setWingPageVisible={setWingPageVisible}
+      >
+      </TopBar>
+      
       <View style={styles.overview}>
         <CategoriesView></CategoriesView>
       </View>
@@ -58,6 +73,7 @@ function App() {
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
+
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>

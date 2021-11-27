@@ -1,33 +1,34 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Pressable } from 'react-native';
 import Moment from 'moment';
 import { StatusBar } from 'expo-status-bar';
 
-class TopBar extends React.Component {
-  render() {
+
+function TopBar ({wingPageVisible, setWingPageVisible}) {
+ 
+  const openSideMenu=()=>{
+    console.log("Event for Side Menu open Button Presssed")
+  }
+
+  const openEditPage=()=>{
+    console.log("Event for Edit Page Menu open Button Pressed")
+  }
+
+
     Moment.locale('en');
     let currentDate = new Date();
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.circle} onPress={this.openSideMenu}>
-        </TouchableOpacity>
+        <Pressable style={styles.circle} onPress={() => setWingPageVisible(true)}>
+        </Pressable>
         <Text >{Moment(currentDate).format('d MMMM')}</Text>
-        <TouchableOpacity style={styles.button} onPress={this.openEditPage} title>
+        <TouchableOpacity style={styles.button} onPress={() =>openEditPage()} >
           <Text>Edit</Text>
         </TouchableOpacity>
       </View>
+    
     );
-  }
-
-  openSideMenu(){
-    console.log("Event for Side Menu open Button Presssed")
-  }
-
-  openEditPage(){
-    console.log("Event for Edit Page Menu open Button Pressed")
-  }
-
-}
+};
 
 const styles = StyleSheet.create({
   container: {
