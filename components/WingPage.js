@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, Pressable, View } from "react-native";
 import {openSideMenu} from './TopBar';
 import Modal from 'react-native-modal';
-
+import {images} from './Images';
 export default function WingPage ({wingPageVisible, setWingPageVisible}) {
       
       return (
@@ -14,13 +14,14 @@ export default function WingPage ({wingPageVisible, setWingPageVisible}) {
             isVisible={wingPageVisible}
             onRequestClose={() => {setWingPageVisible(!wingPageVisible);}}>
 
-              <View style={styles.centeredView}>
+              <View style={styles.centerModalView}>
                 <View style={styles.modalView}>
-                <Text style={styles.modalText}>Wing page Modal</Text>
-                <Pressable style={[styles.button, styles.buttonClose]}
+                <Text style={styles.header}>(Someone's) Weekly Report</Text>
+                <Text style={styles.modalText}>GOOD JOB!! ABSOLUTELY PERFECT</Text>
+                <Pressable style={styles.button}
                         onPress={() => setWingPageVisible(!wingPageVisible)}>          
                         
-                        <Text style={styles.textStyle}>Hide Modal</Text>
+                        <Text style={styles.textStyle}>Finish Review</Text>
                 
                 </Pressable>
                 </View>
@@ -37,13 +38,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
+  centerModalView: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
+    width: '100%',
+    height: '80%',
+    backgroundColor: '#fff',
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2
@@ -52,22 +60,25 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
+  header:{
+    fontSize:20,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    backgroundColor: "#00462A",
   },
   
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
   textStyle: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center"
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 10,
     textAlign: "center"
   }
 });

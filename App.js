@@ -55,17 +55,13 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <WingPage
-          wingPageVisible={wingPageVisible} 
-          setWingPageVisible={setWingPageVisible} >
-      </WingPage>
-      
+      <View style={styles.barcontainer} >
       <TopBar
         wingPageVisible={wingPageVisible} 
         setWingPageVisible={setWingPageVisible}
       >
       </TopBar>
-      
+      </View>
       <View style={styles.overview}>
         <CategoriesView></CategoriesView>
       </View>
@@ -88,7 +84,11 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     paddingTop: StatusBar.currentHeight,
+  },
+  barcontainer: {
+    height: 55,
   },
   appTitle: {
     color: '#fff',
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   listWrapper: {
     height: '100%',
   },
+  
   input: {
     padding: 20,
     borderBottomColor: '#bbb',
