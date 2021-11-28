@@ -1,8 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, Pressable, View } from "react-native";
-import {openSideMenu} from './TopBar';
 import Modal from 'react-native-modal';
-import {images} from './Images';
 export default function WingPage ({wingPageVisible, setWingPageVisible}) {
       
       return (
