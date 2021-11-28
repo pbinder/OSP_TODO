@@ -6,6 +6,7 @@ import {
   StatusBar,
 } from 'react-native';
 
+
 import TodoInsert from './components/TodoInsert';
 import TodoListItem from './components/TodoListItem';
 import TopBar from './components/TopBar';
@@ -13,9 +14,13 @@ import CategoriesView from './components/CategoriesView';
 
 import db from './firebase';
 import firebase from 'firebase';
+import WingPage from './components/WingPage';
 
 function App() {
   const [taskItems, setTaskItems] = useState([]);
+
+  //variables for wing page
+  const [wingPageVisible, setWingPageVisible] = useState(false);
 
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +55,13 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TopBar></TopBar>
+      <View style={styles.barcontainer} >
+      <TopBar
+        wingPageVisible={wingPageVisible} 
+        setWingPageVisible={setWingPageVisible}
+      >
+      </TopBar>
+      </View>
       <View style={styles.overview}>
         <CategoriesView></CategoriesView>
       </View>
@@ -58,6 +69,7 @@ function App() {
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
+
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>
@@ -72,7 +84,11 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     paddingTop: StatusBar.currentHeight,
+  },
+  barcontainer: {
+    height: 55,
   },
   appTitle: {
     color: '#fff',
@@ -95,6 +111,7 @@ const styles = StyleSheet.create({
   listWrapper: {
     height: '100%',
   },
+  
   input: {
     padding: 20,
     borderBottomColor: '#bbb',
