@@ -1,13 +1,101 @@
+<<<<<<< Updated upstream
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+=======
+import React, {useEffect, useState} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  StatusBar,
+} from 'react-native';
+
+
+import TodoInsert from './components/TodoInsert';
+import TodoListItem from './components/TodoListItem';
+import TopBar from './components/TopBar';
+import CategoriesView from './components/CategoriesView';
+import Search from './components/Search';
+
+import db from './firebase';
+import firebase from 'firebase';
+import WingPage from './components/WingPage';
+
+function App() {
+  const [taskItems, setTaskItems] = useState([]);
+
+  //variables for wing page
+  const [wingPageVisible, setWingPageVisible] = useState(false);
+
+  //variables for the add new task modal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  //when the app loads, fetch the database
+  useEffect(() => {
+    db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+      setTaskItems(snapshot.docs.map(doc => ({
+        id: doc.id, 
+        name: doc.data().name, 
+        date: doc.data().date,
+        category: doc.data().category,
+        note: doc.data().note,
+        completed: doc.data().completed
+      })))
+    })
+  }, []);
+
+  const handleAddTask = (task) => {
+    db.collection('todos').add({
+      name: task.name,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      date: task.date,
+      category: task.category,
+      note:task.note,
+      completed: task.completed
+    })
+
+    setTaskItems([...taskItems, task])
+    setModalVisible(!modalVisible);
+  }
+>>>>>>> Stashed changes
 
 export default function App() {
   return (
+<<<<<<< Updated upstream
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
+=======
+    <SafeAreaView style={styles.container}>
+      <View style={styles.barcontainer} >
+      <TopBar
+        wingPageVisible={wingPageVisible} 
+        setWingPageVisible={setWingPageVisible}
+      >
+      </TopBar>
+      </View>
+      <View style={styles.overview}>
+        <CategoriesView></CategoriesView>
+      </View>
+      <View style={styles.search}>
+        <Search></Search>
+      </View>
+      <View style={styles.list}>
+        <TodoInsert 
+          modalVisible={modalVisible} 
+          setModalVisible={setModalVisible}
+
+          handleAddTask = {handleAddTask}
+        > 
+        </TodoInsert>
+        <View style={styles.listWrapper}>
+          <TodoListItem taskItems={taskItems}/>
+       </View>
+      </View>
+    </SafeAreaView>
+>>>>>>> Stashed changes
   );
 }
 
@@ -18,4 +106,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+<<<<<<< Updated upstream
+=======
+  overview: {
+    backgroundColor: '#F5F5F5',	
+    flex: 2,
+  },
+  search: {
+    backgroundColor: '#00462A',	
+  },
+  list: {
+    backgroundColor: '#00462A',
+    //borderTopStartRadius: 20,
+    //borderTopEndRadius: 20,
+    flex: 3,
+  },
+  listWrapper: {
+    height: '100%',
+  },
+  
+  input: {
+    padding: 20,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 1,
+    fontSize: 24,
+    marginLeft: 20,
+  }
+>>>>>>> Stashed changes
 });
