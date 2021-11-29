@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-=======
 import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
@@ -58,16 +53,8 @@ function App() {
     setTaskItems([...taskItems, task])
     setModalVisible(!modalVisible);
   }
->>>>>>> Stashed changes
 
-export default function App() {
   return (
-<<<<<<< Updated upstream
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-=======
     <SafeAreaView style={styles.container}>
       <View style={styles.barcontainer} >
       <TopBar
@@ -95,19 +82,26 @@ export default function App() {
        </View>
       </View>
     </SafeAreaView>
->>>>>>> Stashed changes
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: '100%',
+    paddingTop: StatusBar.currentHeight,
   },
-<<<<<<< Updated upstream
-=======
+  barcontainer: {
+    height: 55,
+  },
+  appTitle: {
+    color: '#fff',
+    fontSize: 36,
+    marginTop: 30,
+    marginBottom: 30,
+    fontWeight: '300',
+    textAlign: 'center',
+  },
   overview: {
     backgroundColor: '#F5F5F5',	
     flex: 2,
@@ -132,5 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginLeft: 20,
   }
->>>>>>> Stashed changes
 });
+
+export default App;
