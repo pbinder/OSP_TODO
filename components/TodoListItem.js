@@ -17,11 +17,10 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
     const [selectedItems, setSelectedItems] = useState([]);
 
     const editTasksArray = taskItems.map( item => {
-        let label = item.name + '\n'+'due at ' + moment.unix(item.date.seconds).format('YYYY/MM/DD') + 
+        let label = item.name + '\n '+'due at ' + moment.unix(item.date.seconds).format('YYYY/MM/DD') + 
         ' at ' + moment.unix(item.date.seconds).format('HH:mm')
         return {label: label, value: item.id}
     })
-
 
     const onRowDidOpen = rowKey => {
         console.log('This row opened', rowKey);
@@ -32,9 +31,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
             if (item.id == task.id)task.completed = !task.completed;
             return item
         })
-
         setTaskItems(tempArr)
-        console.log('Complete Task', task);
     };
 
     const renderItem = data => (
@@ -75,23 +72,36 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
         </View>
     );
 
-
     const deleteItem = data => {
         db.collection('todos').doc(data.item.id).delete();
     };
 
     const deleteSelectedItems = () => {
-        console.log("selected", selectedItems)
         selectedItems.forEach(item => {
           db.collection('todos').doc(item.value).delete();
         })
     };
+
     const deleteAllItems = () => {
         taskItems.forEach(item => {
           db.collection('todos').doc(item.id).delete();
         })
     };
 
+    const renderLabel = (label) => {
+        let split = label.split(" ")[0].trim();
+        let task = taskItems.find(item =>  item.name == split)
+        return (
+          <View style={styles.multiSelectContainer}>
+              {!task.completed &&
+                  <Text style={styles.label}>{label}</Text>
+              }
+              {task.completed &&
+                  <Text style={ styles.labelCompleted }>{label}</Text>
+              }
+          </View>
+        )
+      }
   
     return (
         <View>
@@ -114,29 +124,30 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
         }
 
         {!isEdit &&
-            <View style={styles.container}>
-                <SwipeListView
-                    data={taskItems}
-                    keyExtractor={(item, index) => `${index}`}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    leftOpenValue={75}
-                    rightOpenValue={-150}
-                    onRowDidOpen={onRowDidOpen}
-                    disableRightSwipe={true}
-                >
-                </SwipeListView>
-            </View>
+        <View style={styles.container}>
+            <SwipeListView
+                data={taskItems}
+                keyExtractor={(item, index) => `${index}`}
+                renderItem={renderItem}
+                renderHiddenItem={renderHiddenItem}
+                leftOpenValue={75}
+                rightOpenValue={-150}
+                onRowDidOpen={onRowDidOpen}
+                disableRightSwipe={true}
+            >
+            </SwipeListView>
+        </View>
         }
         { isEdit &&
         <View style={styles.multiSelectContainer}>
-        <SelectMultiple
-            items={editTasksArray}
-            keyExtractor={(item, index) => `${index}`}
-            selectedItems={selectedItems}
-            onSelectionsChange={setSelectedItems}
-            labelStyle={styles.label}
-             />
+            <SelectMultiple
+                items={editTasksArray}
+                keyExtractor={(item, index) => `${index}`}
+                selectedItems={selectedItems}
+                onSelectionsChange={setSelectedItems}
+                renderLabel={renderLabel}
+                rowStyle={styles.rowStyle}
+                />
         </View>          
         }
         </View>
@@ -158,6 +169,9 @@ const styles = StyleSheet.create({
     multiSelectContainer: {
         marginLeft: 10,
         marginRight: 10,
+      },
+      rowStyle: {
+        height: 60,
       },
     itemLeft: {
         flexDirection: 'row',
@@ -219,10 +233,16 @@ const styles = StyleSheet.create({
         marginLeft: 25,
     },    
     label: {
-        paddingLeft: 35,
+        paddingLeft: 25,
         fontWeight: '500',
-        fontSize: 17,
-        width: '100%',
+        fontSize: 16,
+    },
+    labelCompleted:{
+        paddingLeft: 25,
+        fontWeight: '500',
+        fontSize: 16,
+        textDecorationLine: 'line-through',
+        color:'#8EBEBE'
     },
     text: {
         fontWeight: '500',
@@ -255,5 +275,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textDecorationLine: 'line-through'
     }    
- 
 });
