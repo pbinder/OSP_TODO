@@ -4,17 +4,8 @@ import Moment from 'moment';
 import { StatusBar } from 'expo-status-bar';
 import WingPage from './WingPage';
 
-function TopBar ({wingPageVisible, setWingPageVisible}) {
+export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, setEditState}) {
  
-  const openSideMenu=()=>{
-    console.log("Event for Side Menu open Button Presssed")
-  }
-
-  const openEditPage=()=>{
-    console.log("Event for Edit Page Menu open Button Pressed")
-  }
-
-
     Moment.locale('en');
     let currentDate = new Date();
     return (
@@ -29,9 +20,16 @@ function TopBar ({wingPageVisible, setWingPageVisible}) {
         <Pressable style={styles.circle} onPress={() => setWingPageVisible(true)} underlayColor = '#000'>
         </Pressable>
         <Text >{Moment(currentDate).format('d MMMM')}</Text>
-        <TouchableOpacity style={styles.button} onPress={() =>openEditPage()} >
+        {!isEdit && 
+        <TouchableOpacity style={styles.button} onPress={() =>setEditState(true)} >
           <Text>Edit</Text>
         </TouchableOpacity>
+        }
+        {isEdit && 
+        <TouchableOpacity style={styles.button} onPress={() =>setEditState(false)} >
+          <Text>Save</Text>
+        </TouchableOpacity>
+        }
       </View>
     </View>
     );
@@ -61,12 +59,10 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   button: {
-    width: 30,
+    width: 35,
     height: 30,
     color: '#FFFFFF',
     marginRight: 5,
     marginTop: 10
   },
 });
-
-export default TopBar;

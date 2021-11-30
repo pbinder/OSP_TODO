@@ -74,7 +74,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
           <View style={styles.centerModalView}>
             <View style={styles.modalView}>
             <Text style={styles.header}>
-            Add new task
+              Add new task
             </Text>
               <TouchableOpacity style={styles.addNewContainer}>
                 <TextInput style={styles.addTaskWrapper} placeholder={'Name'} onChangeText={text => setName(text)}/>
@@ -174,7 +174,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
           </View>
         </Modal>
         <Pressable
-          style={[styles.button, styles.buttonOpen]}
+          style={[styles.button]}
           onPress={() => setModalVisible(true)}
         >
           <Text style={styles.text}>+ add new task</Text>
