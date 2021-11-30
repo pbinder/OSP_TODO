@@ -5,13 +5,11 @@ import {
   View,
   StatusBar,
 } from 'react-native';
-
-
 import TodoInsert from './components/TodoInsert';
 import TodoListItem from './components/TodoListItem';
 import TopBar from './components/TopBar';
 import CategoriesView from './components/CategoriesView';
-
+import Search from './components/Search';
 import db from './firebase';
 import firebase from 'firebase';
 
@@ -67,7 +65,10 @@ function App() {
       </TopBar>
       </View>
       <View style={styles.overview}>
-        <CategoriesView isEdit={isEdit} ></CategoriesView>
+        <CategoriesView isEdit={isEdit}></CategoriesView>
+      </View>
+      <View style={styles.search}>
+        <Search></Search>
       </View>
       <View style={styles.list}>
         <TodoInsert 
@@ -104,6 +105,9 @@ const styles = StyleSheet.create({
   overview: {
     backgroundColor: '#F5F5F5',	
     flex: 2,
+  },
+  search: {
+    backgroundColor: '#00462A',	
   },
   list: {
     backgroundColor: '#00462A',
