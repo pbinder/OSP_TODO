@@ -5,23 +5,22 @@ import {
   View,
   StatusBar,
 } from 'react-native';
-
-
 import TodoInsert from './components/TodoInsert';
 import TodoListItem from './components/TodoListItem';
 import TopBar from './components/TopBar';
 import CategoriesView from './components/CategoriesView';
 import Search from './components/Search';
-
 import db from './firebase';
 import firebase from 'firebase';
-import WingPage from './components/WingPage';
 
 function App() {
   const [taskItems, setTaskItems] = useState([]);
 
   //variables for wing page
   const [wingPageVisible, setWingPageVisible] = useState(false);
+
+  //Editstate
+  const [isEdit, setEditState] = useState(false);
 
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,11 +59,13 @@ function App() {
       <TopBar
         wingPageVisible={wingPageVisible} 
         setWingPageVisible={setWingPageVisible}
+        isEdit={isEdit}
+        setEditState={setEditState}
       >
       </TopBar>
       </View>
       <View style={styles.overview}>
-        <CategoriesView></CategoriesView>
+        <CategoriesView isEdit={isEdit}></CategoriesView>
       </View>
       <View style={styles.search}>
         <Search></Search>
@@ -73,12 +74,11 @@ function App() {
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
-
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>
         <View style={styles.listWrapper}>
-          <TodoListItem taskItems={taskItems}/>
+          <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>
        </View>
       </View>
     </SafeAreaView>
