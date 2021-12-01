@@ -1,17 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { Sort } from './constants/Sort';
 
 export default function SortAs(){
-
-    const sortMenu = ["Manual", "Alphabet", "Added order"]
+    const [sortBy, setSortBy] = useState(Sort[0]);
+    const sortMenu = ["Manual", "Alphabet", "Recent"]
 
     return(
         <SelectDropdown
                   data={sortMenu}
                   onSelect={(selectedItem) => {
-                    setCategory(selectedItem)
+                    setSortBy(selectedItem)
                   }}
                   buttonTextAfterSelection={(selectedItem) => {
                    return selectedItem
