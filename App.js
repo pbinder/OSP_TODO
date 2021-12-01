@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   overview: {
     backgroundColor: '#F5F5F5',	
-    flex: 2,
+    flex: 2.5,
   },
   search: {
     backgroundColor: '#00462A',	
