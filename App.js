@@ -12,6 +12,7 @@ import CategoriesView from './components/CategoriesView';
 import Search from './components/Search';
 import db from './firebase';
 import firebase from 'firebase';
+import SortAs from './components/SortAs';
 
 function App() {
   const [taskItems, setTaskItems] = useState([]);
@@ -71,12 +72,15 @@ function App() {
         <Search></Search>
       </View>
       <View style={styles.list}>
+        <View style={styles.bar}>
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>
+        <SortAs></SortAs>
+        </View>
         <View style={styles.listWrapper}>
           <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>
        </View>
@@ -125,6 +129,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 24,
     marginLeft: 20,
+  },
+  bar:{
+    alignSelf: 'stretch',
+    height: 45,
+    flexDirection: 'row', // row
+    alignItems: 'center',
+    justifyContent: 'space-between', // center, space-around
+    paddingLeft: 10,
+    paddingRight: 10,
   }
 });
 

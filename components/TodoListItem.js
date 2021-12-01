@@ -93,10 +93,10 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
         let task = taskItems.find(item =>  item.name == split)
         return (
           <View style={styles.multiSelectContainer}>
-              {!task.completed &&
+              { (!task.completed) &&
                   <Text style={styles.label}>{label}</Text>
               }
-              {task.completed &&
+              { (task.completed) &&
                   <Text style={ styles.labelCompleted }>{label}</Text>
               }
           </View>
