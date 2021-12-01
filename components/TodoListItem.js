@@ -12,7 +12,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
 
-export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
+export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalVisible, modalVisible, tasksComp, setTasksComp, tasksIncomp, setTasksIncomp, setWillEdit, dataToEdit}) {
 
     const [selectedItems, setSelectedItems] = useState([]);
 
@@ -28,10 +28,12 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
 
     const completeTask = task => {
         let tempArr = taskItems.map(item => {
-            if (item.id == task.id)task.completed = !task.completed;
+            if (item.id == task.id) task.completed = !task.completed;
             return item
         })
         setTaskItems(tempArr)
+        let counter = 0;
+        updateCounter(counter, tempArr);
     };
 
     const renderItem = data => (
@@ -61,19 +63,20 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
         </TouchableHighlight>
     );
 
-    const renderHiddenItem = (data) => (
+    const renderHiddenItem = (data, rowMap) => (
         <View style={styles.rowBack}>
-            <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]}>
+            <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={() => {setWillEdit(true), setModalVisible(!modalVisible), dataToEdit(data.item)}}>
                 <Text style={styles.backTextWhite}>Edit</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={() => deleteItem(data)}>
+            <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={() => deleteItem(data, rowMap)}>
                 <Text style={styles.backTextWhite}>Delete</Text>
             </TouchableOpacity>
         </View>
     );
 
-    const deleteItem = data => {
+    const deleteItem = (data, rowMap) => {
         db.collection('todos').doc(data.item.id).delete();
+        rowMap[data.index].closeRow();
     };
 
     const deleteSelectedItems = () => {
@@ -88,9 +91,21 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
         })
     };
 
+    const updateCounter = (counter, tempArr) => {
+        taskItems.forEach(item => {
+            if (item.completed) counter++;
+        })
+        tasksComp = counter;
+        tasksIncomp = tempArr.length - tasksComp; 
+        setTasksComp(tasksComp);
+        setTasksIncomp(tasksIncomp);
+    };
+
+
+
     const renderLabel = (label) => {
         let split = label.split(" ")[0].trim();
-        let task = taskItems.find(item =>  item.name == split)
+        let task = taskItems.find(item => item.name == split);
         return (
           <View style={styles.multiSelectContainer}>
               {!task.completed &&
@@ -130,7 +145,6 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems}) {
                 keyExtractor={(item, index) => `${index}`}
                 renderItem={renderItem}
                 renderHiddenItem={renderHiddenItem}
-                leftOpenValue={75}
                 rightOpenValue={-150}
                 onRowDidOpen={onRowDidOpen}
                 disableRightSwipe={true}

@@ -14,7 +14,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask}) {
+export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, noteToEdit, handleUpdateTask}) {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -54,12 +54,22 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       name: name, 
       date: time, 
       category: category, 
-      note:note,
+      note: note,
       completed: false 
     }
     handleAddTask(task);
   };
 
+  const updateTaskObject = () => {
+    console.log("time", time)
+    const task = {
+      name: name, 
+      date: time, 
+      category: category, 
+      note: note,
+    }
+    handleUpdateTask(task);
+  };
 
     return (
       <View style={styles.centeredView}>
@@ -77,7 +87,12 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
               Add new task
             </Text>
               <TouchableOpacity style={styles.addNewContainer}>
-                <TextInput style={styles.addTaskWrapper} placeholder={'Name'} onChangeText={text => setName(text)}/>
+                {!willEdit &&
+                  <TextInput style={styles.addTaskWrapper} placeholder={'Name'} onChangeText={text => setName(text)}/>
+                }
+                {willEdit &&
+                  <TextInput style={styles.addTaskWrapper} onChangeText={text => setName(text)}>{nameToEdit}</TextInput>
+                }
               </TouchableOpacity>
             <View style={styles.dateStyle}>
               <Text style={styles.date}>
@@ -126,7 +141,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 )}
               </View>
 
-
+                {!willEdit &&
                 <SelectDropdown
                   data={Categories}
                   onSelect={(selectedItem) => {
@@ -149,34 +164,71 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                   dropdownIconPosition={"right"}
                   dropdownStyle={styles.dropdown1DropdownStyle}
                   rowStyle={styles.dropdown1RowStyle}
-                  rowTextStyle={styles.dropdown1RowTxtStyle}
-                />
-
+                  rowTextStyle={styles.dropdown1RowTxtStyle}/>
+                }
+                {willEdit &&
+                  <SelectDropdown
+                  data={Categories}
+                  onSelect={(selectedItem) => {
+                    setCategory(selectedItem)
+                  }}
+                  buttonTextAfterSelection={(selectedItem) => {
+                   return selectedItem
+                  }}
+                  rowTextForSelection={(item) => {
+                     return item
+                  }}
+                  defaultButtonText={categToEdit}
+                  buttonStyle={styles.dropdown1BtnStyle}
+                  buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                  renderDropdownIcon={() => {
+                    return (
+                      <FontAwesome name="chevron-down" color={"#444"} size={18} />
+                    );
+                  }}
+                  dropdownIconPosition={"right"}
+                  dropdownStyle={styles.dropdown1DropdownStyle}
+                  rowStyle={styles.dropdown1RowStyle}
+                  rowTextStyle={styles.dropdown1RowTxtStyle}/>
+                }
+              {!willEdit &&  
               <TouchableOpacity style={styles.addNewContainer}>
                 <TextInput style={styles.addTaskWrapper} placeholder={'Add a note...'} onChangeText={text => setNote(text)}/>
               </TouchableOpacity>
-                        
+              } 
+              {willEdit &&  
+              <TouchableOpacity style={styles.addNewContainer}>
+                <TextInput style={styles.addTaskWrapper} onChangeText={text => setNote(text)}>{noteToEdit}</TextInput>
+              </TouchableOpacity>
+              } 
               <View style={styles.buttonsWrapper}>
               <Pressable
                   style={[styles.buttonModal, styles.buttonCancel]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={() => {setWillEdit(!willEdit), setModalVisible(!modalVisible)}}
                 >
                   <Text style={styles.textStyle}>Close</Text>
                 </Pressable>
-                <Pressable
+                {willEdit &&
+                  <Pressable
                   style={[styles.buttonModal, styles.buttonSubmit]}
-                  onPress={() => setTaskObject()}
-                >
+                  onPress={() => updateTaskObject()}>
                   <Text style={styles.textStyle}>Submit</Text>
                 </Pressable>
+                }
+                {!willEdit &&
+                  <Pressable
+                    style={[styles.buttonModal, styles.buttonSubmit]}
+                    onPress={() => setTaskObject()}>
+                    <Text style={styles.textStyle}>Submit</Text>
+                  </Pressable>
+                }
               </View>
             </View>
           </View>
         </Modal>
         <Pressable
           style={[styles.button]}
-          onPress={() => setModalVisible(true)}
-        >
+          onPress={() => {setWillEdit(false), setModalVisible(true)}}>
           <Text style={styles.text}>+ add new task</Text>
         </Pressable>
       </View>
@@ -185,7 +237,6 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
 
 const styles = StyleSheet.create({
   centeredView: {
-    //flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',

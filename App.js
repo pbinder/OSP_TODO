@@ -25,6 +25,12 @@ function App() {
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
 
+  //categories counter update (tasks left, tasks completed, etc)
+  const [tasksComp, setTasksComp] = useState(0);
+  const [tasksIncomp, setTasksIncomp] = useState(0);
+  const [tasksTotal, setTasksTotal] = useState('');
+  const [tasksHW, setTasksHW] = useState('');
+
   //when the app loads, fetch the database
   useEffect(() => {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
@@ -45,11 +51,37 @@ function App() {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       date: task.date,
       category: task.category,
-      note:task.note,
+      note: task.note,
       completed: task.completed
     })
+    setTaskItems([...taskItems, task]);
+    setModalVisible(!modalVisible);
+  }
 
-    setTaskItems([...taskItems, task])
+  const [willEdit, setWillEdit] = useState(true);
+  let [idToEdit, setIdToEdit] = useState('');
+  let [nameToEdit, setNameToEdit] = useState('');
+  let [dateToEdit, setDateToEdit] = useState('');
+  let [timeToEdit, setTimeToEdit] = useState('');
+  let [categToEdit, setCategToEdit] = useState('');
+  let [noteToEdit, setNoteToEdit] = useState('');
+
+  const dataToEdit = (data) => {
+    setIdToEdit(data.id);
+    setNameToEdit(data.name);
+    setDateToEdit(data.date);
+    setCategToEdit(data.category);
+    setNoteToEdit(data.note);
+  }
+
+  const handleUpdateTask = (task) => {
+    db.collection('todos').doc(idToEdit).set({
+      name: task.name,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      date: task.date,
+      category: task.category,
+      note: task.note
+    }, {merge: true});
     setModalVisible(!modalVisible);
   }
 
@@ -65,7 +97,13 @@ function App() {
       </TopBar>
       </View>
       <View style={styles.overview}>
-        <CategoriesView isEdit={isEdit}></CategoriesView>
+        <CategoriesView 
+          isEdit={isEdit}
+          tasksComp={tasksComp}
+          tasksIncomp={tasksIncomp}
+          tasksTotal={tasksTotal}
+          tasksHW={tasksHW}
+          ></CategoriesView>
       </View>
       <View style={styles.search}>
         <Search></Search>
@@ -75,10 +113,31 @@ function App() {
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
           handleAddTask = {handleAddTask}
+          willEdit={willEdit}
+          setWillEdit={setWillEdit}
+          nameToEdit={nameToEdit}
+          categToEdit={categToEdit}
+          noteToEdit={noteToEdit}
+          handleUpdateTask={handleUpdateTask}
         > 
         </TodoInsert>
         <View style={styles.listWrapper}>
-          <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>
+          <TodoListItem 
+            taskItems={taskItems} 
+            isEdit={isEdit} 
+            setTaskItems={setTaskItems} 
+            modalVisible={modalVisible} 
+            setModalVisible={setModalVisible}
+            tasksComp={tasksComp}
+            setTasksComp={setTasksComp}
+            tasksIncomp={tasksIncomp}
+            setTasksIncomp={setTasksIncomp}
+            tasksTotal={tasksTotal}
+            setTasksTotal={setTasksTotal}
+            willEdit={willEdit}
+            setWillEdit={setWillEdit}
+            dataToEdit={dataToEdit}
+            />
        </View>
       </View>
     </SafeAreaView>

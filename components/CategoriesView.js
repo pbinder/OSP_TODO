@@ -1,14 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-export default function CategoriesView ({isEdit}) {
-
+export default function CategoriesView ({isEdit, modalVisible, tasksComp, tasksIncomp, tasksTotal, tasksHW}) {
 
    const categButton=()=> {
-        console.log('Category task Button pressed')
-     }
-      return (
+        console.log("Category task Button pressed");
+    }
     
+      return (
         <View style={styles.overviewContainer}>
             <View style={styles.taskCircleTitle}>
                 <Text style={styles.todaysTasks}>Today's Tasks</Text>
@@ -20,22 +19,22 @@ export default function CategoriesView ({isEdit}) {
                 </View>
                 <TouchableOpacity style={styles.upperCategoryBox} onPress={() =>categButton()}>
                     <Text style={styles.categoryName}>Incomplete</Text>
-                    <Text style={styles.numOfTasks}>3</Text>
+                    <Text style={styles.numOfTasks}>{tasksIncomp}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.upperCategoryBox} onPress={() =>categButton()}>
                     <Text style={styles.categoryName}>Completed</Text>
-                    <Text style={styles.numOfTasks}>0</Text>
+                    <Text style={styles.numOfTasks}>{tasksComp}</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.lowerRowContainer}>
                 <TouchableOpacity style={styles.lowerCategoryBox} onPress={() =>categButton()}>
                     <Text style={styles.categoryName}>All</Text>
-                    <Text style={styles.numOfTasks}>8</Text>
+                    <Text style={styles.numOfTasks}>{tasksIncomp + tasksComp}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.lowerCategoryBox} onPress={() =>categButton()}>
                     <Text style={styles.categoryName}>HW</Text>
-                    <Text style={styles.numOfTasks}>2</Text>
+                    <Text style={styles.numOfTasks}>3{tasksHW}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.lowerCategoryBox} onPress={() =>categButton()}>
                     <Text style={styles.categoryName}>Priority</Text>
