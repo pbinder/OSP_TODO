@@ -6,7 +6,7 @@ export default function CategoriesView ({taskItems}) {
     const tasksComp = taskItems.filter(item => item.completed === true).length;
     const tasksIncomp = taskItems.filter(item => item.completed === false).length;
     const tasksHW = taskItems.filter(item => item.category === 'Homework').length;
-    const percent = (tasksComp*100)/(tasksIncomp+tasksComp);
+    const percent = Math.floor((tasksComp*100)/(tasksIncomp+tasksComp));
 
     const categButton=()=> {
         console.log("Category task Button pressed");
