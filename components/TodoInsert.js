@@ -3,7 +3,6 @@ import {
   StyleSheet, 
   View, 
   Text,
-  Modal,
   Pressable,
   TouchableOpacity,
   TextInput,
@@ -13,6 +12,7 @@ import Moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Modal from 'react-native-modal';
 
 export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, noteToEdit, handleUpdateTask}) {
   const [date, setDate] = useState(new Date());
@@ -49,7 +49,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   };
   
   const setTaskObject = () => {
-    console.log("time", time)
+    console.log("time ", time)
     const task = {
       name: name, 
       date: time, 
@@ -61,7 +61,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   };
 
   const updateTaskObject = () => {
-    console.log("time", time)
+    console.log("time ", time)
     const task = {
       name: name, 
       date: time, 
@@ -74,13 +74,13 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
     return (
       <View style={styles.centeredView}>
         <Modal
-          animationType="slide"
+          style = {{marginLeft: 0, marginRight: 0, marginBottom: 0}}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}
           transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
+          isVisible={modalVisible}
+          onRequestClose={() => {setModalVisible(!modalVisible);}} 
+          >
           <View style={styles.centerModalView}>
             <View style={styles.modalView}>
             <Text style={styles.header}>
@@ -91,7 +91,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                   <TextInput style={styles.addTaskWrapper} placeholder={'Name'} onChangeText={text => setName(text)}/>
                 }
                 {willEdit &&
-                  <TextInput style={styles.addTaskWrapper} onChangeText={text => setName(text)}>{nameToEdit}</TextInput>
+                  <TextInput style={styles.addTaskWrapper} defaultValue={nameToEdit} onChangeText={text => setName(text)}></TextInput>
                 }
               </TouchableOpacity>
             <View style={styles.dateStyle}>
@@ -108,6 +108,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                
               {show && (
                 <DateTimePicker
+                style={{width:'25%'}}
                 value={date}
                 mode={mode}
                 is24Hour={true}
@@ -131,8 +132,9 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                </Text>
               {show && (
                 <DateTimePicker
+                style={{width:'33%'}}
                 value={date}
-                mode={mode}
+                mode={time}
                 is24Hour={true}
                 minimumDate={new Date()}
                 display="default"
@@ -198,7 +200,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
               } 
               {willEdit &&  
               <TouchableOpacity style={styles.addNewContainer}>
-                <TextInput style={styles.addTaskWrapper} onChangeText={text => setNote(text)}>{noteToEdit}</TextInput>
+                <TextInput style={styles.addTaskWrapper} defaultValue={noteToEdit} onChangeText={text => setNote(text)}></TextInput>
               </TouchableOpacity>
               } 
               <View style={styles.buttonsWrapper}>

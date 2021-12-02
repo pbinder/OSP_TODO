@@ -25,11 +25,13 @@ function App() {
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
 
-  //categories counter update (tasks left, tasks completed, etc)
-  const [tasksComp, setTasksComp] = useState(0);
-  const [tasksIncomp, setTasksIncomp] = useState(0);
-  const [tasksTotal, setTasksTotal] = useState('');
-  const [tasksHW, setTasksHW] = useState('');
+  //editing a todo list item variables
+  const [willEdit, setWillEdit] = useState(true);
+  const [idToEdit, setIdToEdit] = useState('');
+  const [nameToEdit, setNameToEdit] = useState('');
+  const [dateToEdit, setDateToEdit] = useState('');
+  const [categToEdit, setCategToEdit] = useState('');
+  const [noteToEdit, setNoteToEdit] = useState('');
 
   //when the app loads, fetch the database
   useEffect(() => {
@@ -58,14 +60,6 @@ function App() {
     setModalVisible(!modalVisible);
   }
 
-  const [willEdit, setWillEdit] = useState(true);
-  let [idToEdit, setIdToEdit] = useState('');
-  let [nameToEdit, setNameToEdit] = useState('');
-  let [dateToEdit, setDateToEdit] = useState('');
-  let [timeToEdit, setTimeToEdit] = useState('');
-  let [categToEdit, setCategToEdit] = useState('');
-  let [noteToEdit, setNoteToEdit] = useState('');
-
   const dataToEdit = (data) => {
     setIdToEdit(data.id);
     setNameToEdit(data.name);
@@ -77,7 +71,6 @@ function App() {
   const handleUpdateTask = (task) => {
     db.collection('todos').doc(idToEdit).set({
       name: task.name,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       date: task.date,
       category: task.category,
       note: task.note
@@ -99,10 +92,7 @@ function App() {
       <View style={styles.overview}>
         <CategoriesView 
           isEdit={isEdit}
-          tasksComp={tasksComp}
-          tasksIncomp={tasksIncomp}
-          tasksTotal={tasksTotal}
-          tasksHW={tasksHW}
+          taskItems={taskItems}
           ></CategoriesView>
       </View>
       <View style={styles.search}>
@@ -116,6 +106,7 @@ function App() {
           willEdit={willEdit}
           setWillEdit={setWillEdit}
           nameToEdit={nameToEdit}
+          dateToEdit={dateToEdit}
           categToEdit={categToEdit}
           noteToEdit={noteToEdit}
           handleUpdateTask={handleUpdateTask}
@@ -128,12 +119,6 @@ function App() {
             setTaskItems={setTaskItems} 
             modalVisible={modalVisible} 
             setModalVisible={setModalVisible}
-            tasksComp={tasksComp}
-            setTasksComp={setTasksComp}
-            tasksIncomp={tasksIncomp}
-            setTasksIncomp={setTasksIncomp}
-            tasksTotal={tasksTotal}
-            setTasksTotal={setTasksTotal}
             willEdit={willEdit}
             setWillEdit={setWillEdit}
             dataToEdit={dataToEdit}

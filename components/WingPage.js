@@ -1,27 +1,28 @@
 import React from "react";
-import { StyleSheet, Text, Pressable, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Modal from 'react-native-modal';
-export default function WingPage ({wingPageVisible, setWingPageVisible}) {
+
+export default function WingPage ({wingPageVisible, setWingPageVisible}) {   
       
-      return (
-        <View style={styles.centeredView}>
+    return (
+        <View>
             <Modal
+            style = {{marginLeft: 0, marginBottom: 0}}
             animationIn={'slideInLeft'}
             animationOut={'slideOutLeft'}
             transparent={true}
             isVisible={wingPageVisible}
+            onBackdropPress={() => {setWingPageVisible(!wingPageVisible);}}
+            backdropTransitionInTiming={400}
+            backdropTransitionOutTiming={600}
             onRequestClose={() => {setWingPageVisible(!wingPageVisible);}}>
 
               <View style={styles.centerModalView}>
                 <View style={styles.modalView}>
                 <Text style={styles.header}>(Someone's) Weekly Report</Text>
+                <View style={styles.shareBox}/>
+                <View style={styles.dataReport}/>
                 <Text style={styles.modalText}>GOOD JOB!! ABSOLUTELY PERFECT</Text>
-                <Pressable style={styles.button}
-                        onPress={() => setWingPageVisible(!wingPageVisible)}>          
-                        
-                        <Text style={styles.textStyle}>Finish Review</Text>
-                
-                </Pressable>
                 </View>
               </View>
             </Modal>
@@ -30,23 +31,17 @@ export default function WingPage ({wingPageVisible, setWingPageVisible}) {
   };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
   centerModalView: {
-    height: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   modalView: {
-    width: '100%',
-    height: '80%',
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 35,
+    width: '88%',
+    height: '92%',
+    backgroundColor: '#00462A',
+    borderBottomEndRadius: 50,
+    borderTopEndRadius: 50,
     alignItems: 'center',
     justifyContent: 'space-around',
     shadowColor: '#000',
@@ -59,24 +54,28 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   header:{
-    fontSize:20,
+    fontSize: 20,
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    color: '#fff',
+    margin: 20
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    backgroundColor: "#00462A",
+  shareBox: {
+    width: '78%',
+    height: '20%',
+    backgroundColor: '#C0C0C0',
+    borderRadius: 30,
   },
-  
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+  dataReport: {
+    width: '78%',
+    height: '40%',
+    backgroundColor: '#fff',
   },
   modalText: {
-    marginBottom: 10,
-    textAlign: "center"
+    fontSize: 16,
+    margin: 20,
+    textAlign: "center",
+    color: '#fff', 
+    fontWeight: 'bold'
   }
 });
