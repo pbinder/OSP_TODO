@@ -26,6 +26,9 @@ function App() {
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
 
+  //variables for sorting the menu
+  const [standardForList, setStandardForList] = useState('');
+
   //when the app loads, fetch the database
   useEffect(() => {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
@@ -79,7 +82,11 @@ function App() {
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>
-        <SortAs></SortAs>
+        <SortAs
+          taskItems={taskItems}
+          standardForList={standardForList}
+          setStandardForList={setStandardForList}
+          ></SortAs>
         </View>
         <View style={styles.listWrapper}>
           <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>

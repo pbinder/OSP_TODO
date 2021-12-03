@@ -1,18 +1,58 @@
-import React, {useState} from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, {useState, useEffect} from "react";
+import { StyleSheet} from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { Sort } from './constants/Sort';
 
-export default function SortAs(){
-    const [sortBy, setSortBy] = useState(Sort[0]);
+
+
+export default function SortAs(taskItems,setTaskItems){
+
+    const [standardForList, setStandardForList] = useState('');
     const sortMenu = ["Manual", "Alphabet", "Recent"]
+    
+    {(()=>{
+      if(standardForList=='completed') 
+      {useEffect(() => {
+          db.collection('todos').orderBy('completed', 'asc').onSnapshot(snapshot => {
+            setTaskItems(snapshot.docs.map(doc => ({
+              id: doc.id, 
+              name: doc.data().name, 
+              date: doc.data().date,
+              category: doc.data().category,
+              note: doc.data().note,
+              completed: doc.data().completed
+            })))
+          })
+        }, []); }
+      else if(standardForList=='alphabet') 
+      {useEffect(() => {
+          db.collection('todos').orderBy('name', 'asc').onSnapshot(snapshot => {
+            setTaskItems(snapshot.docs.map(doc => ({
+              id: doc.id, 
+              name: doc.data().name, 
+              date: doc.data().date,
+              category: doc.data().category,
+              note: doc.data().note,
+              completed: doc.data().completed
+            })))
+          })
+        }, []);}
+    })()}
+
 
     return(
         <SelectDropdown
                   data={sortMenu}
-                  onSelect={(selectedItem) => {
-                    setSortBy(selectedItem)
+                  onSelect={(selectedItem,index) => {
+                    console.log(selectedItem, index)
+                    {(()=>{
+                      if(index==0) setStandardForList('timestamp');
+                      else if(index==1) setStandardForList('completed'); //have to change inside ' '
+                      if(index==2) setStandardForList('alphabet');  
+                    })()}
+
+                    
+  
                   }}
                   buttonTextAfterSelection={(selectedItem) => {
                    return selectedItem
