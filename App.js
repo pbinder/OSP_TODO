@@ -13,7 +13,7 @@ import Search from './components/Search';
 import db from './firebase';
 import firebase from 'firebase';
 import SortAs from './components/SortAs';
-
+import { Sort } from './components/constants/Sort';
 function App() {
   const [taskItems, setTaskItems] = useState([]);
 
@@ -27,11 +27,11 @@ function App() {
   const [modalVisible, setModalVisible] = useState(false);
 
   //variables for sorting the menu
-  const [standardForList, setStandardForList] = useState('');
+  var [standardForList, setStandardForList] = useState(Sort[0]);
 
   //when the app loads, fetch the database
   useEffect(() => {
-    db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+    db.collection('todos').orderBy(standardForList, 'desc').onSnapshot(snapshot => {
       setTaskItems(snapshot.docs.map(doc => ({
         id: doc.id, 
         name: doc.data().name, 
@@ -83,8 +83,8 @@ function App() {
         > 
         </TodoInsert>
         <SortAs
-          taskItems={taskItems}
-          standardForList={standardForList}
+          //taskItems={taskItems}
+          //standardForList={standardForList}
           setStandardForList={setStandardForList}
           ></SortAs>
         </View>

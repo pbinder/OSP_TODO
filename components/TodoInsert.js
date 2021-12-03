@@ -20,7 +20,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
-  const [category, set] = useState(Categories[0]);
+  const [category, setCategory] = useState(Categories[0]);
   const [note, setNote] = useState('');
 
   const onChangeDate = (event, selectedDate) => {
