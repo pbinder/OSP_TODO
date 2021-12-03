@@ -14,7 +14,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Modal from 'react-native-modal';
 
-export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, noteToEdit, handleUpdateTask}) {
+export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, dateToEdit, noteToEdit, handleUpdateTask}) {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -83,9 +83,12 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
           >
           <View style={styles.centerModalView}>
             <View style={styles.modalView}>
-            <Text style={styles.header}>
-              Add new task
-            </Text>
+              {!willEdit &&
+                <Text style={styles.header}>Add new task</Text>
+              }
+              {willEdit &&
+                <Text style={styles.header}>Edit task</Text>
+              }
               <TouchableOpacity style={styles.addNewContainer}>
                 {!willEdit &&
                   <TextInput style={styles.addTaskWrapper} placeholder={'Name'} onChangeText={text => setName(text)}/>
