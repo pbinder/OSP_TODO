@@ -5,7 +5,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 
-export default function SortAs(taskItems,setTaskItems){
+export default function SortAs(setTaskItems){
 
     const [standardForList, setStandardForList] = useState('');
     const sortMenu = ["Manual", "Alphabet", "Recent"]
