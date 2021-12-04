@@ -79,7 +79,7 @@ function App() {
           handleAddTask = {handleAddTask}
         > 
         </TodoInsert>
-        <SortAs></SortAs>
+        <SortAs taskItems={taskItems} setTaskItems={setTaskItems}></SortAs>
         </View>
         <View style={styles.listWrapper}>
           <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>
