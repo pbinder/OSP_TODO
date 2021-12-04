@@ -4,15 +4,28 @@ import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Sort } from './constants/Sort';
 
-export default function SortAs(){
+export default function SortAs({taskItems, setTaskItems}){
     const [sortBy, setSortBy] = useState(Sort[0]);
     const sortMenu = ["Manual", "Alphabet", "Recent"]
+    const inOrder = (index) => {
+      console.log('in alphabet')
+        {(()=>{
+          if(index==0) inAlphabeticalorder();
+          else if(index==1)  inManualorder();
+          else if(index==2) inTimeorder();
+        })()}
+        
+    };
+    const inAlphabeticalorder = () => {console.log('alpha-')};
+    const inManualorder = () => {console.log('manual-')};
+    const inTimeorder = () => {console.log('time-')};
 
     return(
         <SelectDropdown
                   data={sortMenu}
-                  onSelect={(selectedItem) => {
+                  onSelect={(selectedItem, index) => {
                     setSortBy(selectedItem)
+                    inOrder(index)
                   }}
                   buttonTextAfterSelection={(selectedItem) => {
                    return selectedItem
