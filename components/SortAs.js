@@ -22,7 +22,6 @@ export default function SortAs({taskItems, setTaskItems}){
           
         }*/
 
-
         {(()=>{
           if(index==0) inAlphabeticalOrder();
           else if(index==1)  inManualOrder();
@@ -30,7 +29,7 @@ export default function SortAs({taskItems, setTaskItems}){
         })()}
         
     };
-    const inAlphabeticalOrder = () => {console.log('alpha-')};
+    const inAlphabeticalOrder = () => {taskItems.sort((a,b) => (a.name>b.name)?1:-1); setTaskItems(taskItems); };
     const inManualOrder = () => {console.log('manual-')};
     const inTimeOrder = () => {console.log('time-')};
 
@@ -40,6 +39,7 @@ export default function SortAs({taskItems, setTaskItems}){
                   onSelect={(selectedItem, index) => {
                     setSortBy(selectedItem)
                     inOrder(index)
+                    
                   }}
                   buttonTextAfterSelection={(selectedItem) => {
                    return selectedItem
