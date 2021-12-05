@@ -6,8 +6,6 @@ import WingPage from './WingPage';
 
 export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, setEditState}) {
  
-    Moment.locale('en');
-    let currentDate = new Date();
     return (
     <View style={styles.precontainer}>
       <View style={styles.wingcontainer}>
@@ -19,7 +17,7 @@ export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, se
       <View style={styles.container}>
         <Pressable style={styles.circle} onPress={() => setWingPageVisible(true)} underlayColor = '#000'>
         </Pressable>
-        <Text >{Moment(currentDate).format('d MMMM')}</Text>
+        <Text >{Moment(new Date()).format('DD MMMM')}</Text>
         {!isEdit && 
         <TouchableOpacity style={styles.button} onPress={() =>setEditState(true)} >
           <Text>Edit</Text>

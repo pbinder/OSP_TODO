@@ -25,6 +25,14 @@ function App() {
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
 
+  //editing a todo list item variables
+  const [willEdit, setWillEdit] = useState(true);
+  const [idToEdit, setIdToEdit] = useState('');
+  const [nameToEdit, setNameToEdit] = useState('');
+  const [dateToEdit, setDateToEdit] = useState('');
+  const [categToEdit, setCategToEdit] = useState('');
+  const [noteToEdit, setNoteToEdit] = useState('');
+
   //when the app loads, fetch the database
   useEffect(() => {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
@@ -45,11 +53,28 @@ function App() {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       date: task.date,
       category: task.category,
-      note:task.note,
+      note: task.note,
       completed: task.completed
     })
+    setTaskItems([...taskItems, task]);
+    setModalVisible(!modalVisible);
+  }
 
-    setTaskItems([...taskItems, task])
+  const dataToEdit = (data) => {
+    setIdToEdit(data.id);
+    setNameToEdit(data.name);
+    setDateToEdit(data.date);
+    setCategToEdit(data.category);
+    setNoteToEdit(data.note);
+  }
+
+  const handleUpdateTask = (task) => {
+    db.collection('todos').doc(idToEdit).set({
+      name: task.name,
+      date: task.date,
+      category: task.category,
+      note: task.note
+    }, {merge: true});
     setModalVisible(!modalVisible);
   }
 
@@ -65,7 +90,10 @@ function App() {
       </TopBar>
       </View>
       <View style={styles.overview}>
-        <CategoriesView isEdit={isEdit}></CategoriesView>
+        <CategoriesView 
+          isEdit={isEdit}
+          taskItems={taskItems}
+          ></CategoriesView>
       </View>
       <View style={styles.search}>
         <Search></Search>
@@ -75,10 +103,26 @@ function App() {
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
           handleAddTask = {handleAddTask}
+          willEdit={willEdit}
+          setWillEdit={setWillEdit}
+          nameToEdit={nameToEdit}
+          dateToEdit={dateToEdit}
+          categToEdit={categToEdit}
+          noteToEdit={noteToEdit}
+          handleUpdateTask={handleUpdateTask}
         > 
         </TodoInsert>
         <View style={styles.listWrapper}>
-          <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>
+          <TodoListItem 
+            taskItems={taskItems} 
+            isEdit={isEdit} 
+            setTaskItems={setTaskItems} 
+            modalVisible={modalVisible} 
+            setModalVisible={setModalVisible}
+            willEdit={willEdit}
+            setWillEdit={setWillEdit}
+            dataToEdit={dataToEdit}
+            />
        </View>
       </View>
     </SafeAreaView>
