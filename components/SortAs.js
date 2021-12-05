@@ -9,16 +9,30 @@ export default function SortAs({taskItems, setTaskItems}){
     const sortMenu = ["Manual", "Alphabet", "Recent"]
     const inOrder = (index) => {
       console.log('in alphabet')
+        /*switch(index){
+          case '0':
+            this.inAlphabeticalOrder();
+            break;
+          case '1':
+            this.inManualOrder();
+            break;
+          case '2':
+            this.inTimeOrder();
+            break;
+          
+        }*/
+
+
         {(()=>{
-          if(index==0) inAlphabeticalorder();
-          else if(index==1)  inManualorder();
-          else if(index==2) inTimeorder();
+          if(index==0) inAlphabeticalOrder();
+          else if(index==1)  inManualOrder();
+          else if(index==2) inTimeOrder();
         })()}
         
     };
-    const inAlphabeticalorder = () => {console.log('alpha-')};
-    const inManualorder = () => {console.log('manual-')};
-    const inTimeorder = () => {console.log('time-')};
+    const inAlphabeticalOrder = () => {console.log('alpha-')};
+    const inManualOrder = () => {console.log('manual-')};
+    const inTimeOrder = () => {console.log('time-')};
 
     return(
         <SelectDropdown
