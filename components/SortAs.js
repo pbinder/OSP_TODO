@@ -7,25 +7,20 @@ export default function SortAs({taskItems, setTaskItems}){
     //const [sortBy, setSortBy] = useState(Sort[0]);
     const sortMenu = ["Name", "Date", "Recent"]
     const inOrder = (index) => {
-      console.log('in alphabet')
-        /*switch(index){
-          case '0':
-            this.inAlphabeticalOrder();
+
+        switch(index){
+          case 0:
+            inAlphabeticalOrder();
             break;
-          case '1':
-            this.inManualOrder();
+          case 1:
+            inDateOrder();
             break;
-          case '2':
-            this.inTimeOrder();
+          case 2:
+            inRecentOrder();
             break;
           
-        }*/
+        }
 
-        {(()=>{
-          if(index==0) inAlphabeticalOrder();
-          else if(index==1)  inDateOrder();
-          else if(index==2) inRecentOrder();
-        })()}
         
     };
    
