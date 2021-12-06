@@ -5,7 +5,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 //import { Sort } from './constants/Sort';
 export default function SortAs({taskItems, setTaskItems}){
     //const [sortBy, setSortBy] = useState(Sort[0]);
-    const sortMenu = ["Name", "Date", "Recent"]
+    const sortMenu = ["Name", "CreationDate-Latest", "CreationDate-Earliest"]
     const inOrder = (index) => {
 
         switch(index){
@@ -37,7 +37,7 @@ export default function SortAs({taskItems, setTaskItems}){
           setTaskItems(sorted);
     };
     const inDateOrder = () => {
-      let array=(taskItems.sort( (a,b)=>( a.timeM> b.timeM) ? 1 : -1 ))
+      let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return{
           name:item.name,
@@ -92,7 +92,7 @@ export default function SortAs({taskItems, setTaskItems}){
 
 const styles = StyleSheet.create({
     dropdown1BtnStyle: {
-      width: "25%",
+      width: "40%",
       height: 25,
       backgroundColor: "#FFF",
       borderRadius: 8,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
       borderBottomColor: "#C5C5C5",
     },
     dropdown1RowTxtStyle: { 
-      fontSize: 16,
+      fontSize: 13,
       color: "#444", 
       textAlign: "left" 
     },
