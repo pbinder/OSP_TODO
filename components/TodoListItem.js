@@ -233,11 +233,11 @@ const styles = StyleSheet.create({
         width: 75,
     },
     backRightBtnLeft: {
-        backgroundColor: 'blue',
+        backgroundColor: '#627894',
         right: 75,
     },
     backRightBtnRight: {
-        backgroundColor: 'red',
+        backgroundColor: '#ee6c4d',
         right: 0,
     },
     labelContainer: {
