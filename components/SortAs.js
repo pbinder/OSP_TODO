@@ -2,10 +2,10 @@ import React, {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { Sort } from './constants/Sort';
+//import { Sort } from './constants/Sort';
 export default function SortAs({taskItems, setTaskItems}){
-    const [sortBy, setSortBy] = useState(Sort[0]);
-    const sortMenu = ["Manual", "Alphabet", "Recent"]
+    //const [sortBy, setSortBy] = useState(Sort[0]);
+    const sortMenu = ["Name", "Date", "Recent"]
     const inOrder = (index) => {
       console.log('in alphabet')
         /*switch(index){
@@ -22,26 +22,53 @@ export default function SortAs({taskItems, setTaskItems}){
         }*/
 
         {(()=>{
-          if(index==0) inAlphabeticalOrder(taskItems);
-          else if(index==1)  inManualOrder();
-          else if(index==2) inTimeOrder();
+          if(index==0) inAlphabeticalOrder();
+          else if(index==1)  inDateOrder();
+          else if(index==2) inRecentOrder();
         })()}
         
     };
    
-    const inAlphabeticalOrder = ({taskItems}) => { 
-          let inAOrder=[].concat(taskItems).sort((a,b)=> a.name-b.name)
-          .map(item =>{ return { name: item.name, date:item.date, category:item.category, note:item.category, completed: item.completed} })
-          setTaskItems(inAOrder)
-;    };
-    const inManualOrder = () => {console.log('manual-')};
-    const inTimeOrder = () => {console.log('time-')};
+    const inAlphabeticalOrder = () => { 
+          let array=(taskItems.sort( (a,b)=>( a.name.toLowerCase()> b.name.toLowerCase() ) ? 1 : -1 ))
+          let sorted=array.map(item=>{
+            return{
+              name:item.name,
+              date:item.date,
+              category:item.category,
+              note:item.note,
+              completed:item.completed
+            }})
+          setTaskItems(sorted);
+    };
+    const inDateOrder = () => {
+      let array=(taskItems.sort( (a,b)=>( a.timeM> b.timeM) ? 1 : -1 ))
+      let sorted=array.map(item=>{
+        return{
+          name:item.name,
+          date:item.date,
+          category:item.category,
+          note:item.note,
+          completed:item.completed
+        }})
+      setTaskItems(sorted);};
+    const inRecentOrder = () => {
+      let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
+      let sorted=array.map(item=>{
+        return{
+          name:item.name,
+          date:item.date,
+          category:item.category,
+          note:item.note,
+          completed:item.completed
+        }})
+      setTaskItems(sorted);};
 
     return(
         <SelectDropdown
                   data={sortMenu}
                   onSelect={(selectedItem, index) => {
-                    setSortBy(selectedItem)
+                    //setSortBy(selectedItem)
                     inOrder(index)
                     
                   }}
