@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Sort } from './constants/Sort';
-
 export default function SortAs({taskItems, setTaskItems}){
     const [sortBy, setSortBy] = useState(Sort[0]);
     const sortMenu = ["Manual", "Alphabet", "Recent"]
@@ -23,13 +22,18 @@ export default function SortAs({taskItems, setTaskItems}){
         }*/
 
         {(()=>{
-          if(index==0) inAlphabeticalOrder();
+          if(index==0) inAlphabeticalOrder(taskItems);
           else if(index==1)  inManualOrder();
           else if(index==2) inTimeOrder();
         })()}
         
     };
-    const inAlphabeticalOrder = () => {taskItems.sort((a,b) => (a.name>b.name)?1:-1); setTaskItems(taskItems); };
+   
+    const inAlphabeticalOrder = ({taskItems}) => { 
+          let inAOrder=[].concat(taskItems).sort((a,b)=> a.name-b.name)
+          .map(item =>{ return { name: item.name, date:item.date, category:item.category, note:item.category, completed: item.completed} })
+          setTaskItems(inAOrder)
+;    };
     const inManualOrder = () => {console.log('manual-')};
     const inTimeOrder = () => {console.log('time-')};
 
