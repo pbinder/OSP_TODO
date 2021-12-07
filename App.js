@@ -17,6 +17,9 @@ import SortAs from './components/SortAs';
 function App() {
   const [taskItems, setTaskItems] = useState([]);
 
+  //variables to set percentage.
+  const [percentage, setPercentage]=useState(0);
+
   //variables for wing page
   const [wingPageVisible, setWingPageVisible] = useState(false);
 
@@ -87,6 +90,7 @@ function App() {
         setWingPageVisible={setWingPageVisible}
         isEdit={isEdit}
         setEditState={setEditState}
+        percentage={percentage}
       >
       </TopBar>
       </View>
@@ -94,6 +98,7 @@ function App() {
         <CategoriesView 
           isEdit={isEdit}
           taskItems={taskItems}
+          setPercentage={setPercentage}
           ></CategoriesView>
       </View>
       <View style={styles.search}>
