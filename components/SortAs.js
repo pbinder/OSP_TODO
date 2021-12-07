@@ -1,12 +1,11 @@
-import React, {useState} from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 export default function SortAs({taskItems, setTaskItems}){
     
     const sortMenu = ["Name", "Added Date (Earliest)","Added Date (Latest)",  "Due Date"]
     const inOrder = (index) => {
-
         switch(index){
           case 0:
             inAlphabeticalOrder();
@@ -20,10 +19,7 @@ export default function SortAs({taskItems, setTaskItems}){
           case 3:
             inDueDateOrder();
             break;
-          
-        }
-
-        
+        }       
     };
    
     const inAlphabeticalOrder = () => { 
@@ -76,7 +72,6 @@ export default function SortAs({taskItems, setTaskItems}){
         <SelectDropdown
                   data={sortMenu}
                   onSelect={(selectedItem, index) => {
-                    //setSortBy(selectedItem)
                     inOrder(index)
                     
                   }}

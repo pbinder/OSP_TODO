@@ -23,7 +23,7 @@ export default function Search ({originalTaskItems, setTaskItems}) {
                 <Text style={styles.todaysTasks}>To Do List</Text>
             </View>
             <View style={styles.searchbar}>
-            <TextInput style={styles.searchitem} placeholder="Search" onChangeText={(text)=>searchSpace(text)}/>
+                <TextInput style={styles.searchitem} placeholder="Search" onChangeText={(text)=>searchSpace(text)}/>
             </View>
         </View>
     )   
