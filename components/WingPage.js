@@ -26,8 +26,8 @@ export default function WingPage ({wingPageVisible, setWingPageVisible,percentag
                 <Text style={styles.modalText}>
                       
                       {(()=>{
-                        if (this.percentage>=80) return 'Good Job! Keep up!!';
-                        else if (this.percentage==100) return 'Absolutely PERFECT!! Well Done';
+                        if (percentage==100) return 'Absolutely PERFECT!! Well Done';
+                        else if (percentage>=80) return 'Good Job! Keep up!!' ;
                         else return 'You can do it!!';
                       })()}
                   </Text>
