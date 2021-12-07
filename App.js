@@ -15,7 +15,11 @@ import firebase from 'firebase';
 import SortAs from './components/SortAs';
 
 function App() {
+  //displayed taskitems updated on sort or filtering
   const [taskItems, setTaskItems] = useState([]);
+
+  //needed for filtering to remeber the original items
+  const [originalTaskItems, setOriginalTaskItems] = useState([]);
 
   //variables for wing page
   const [wingPageVisible, setWingPageVisible] = useState(false);
@@ -45,6 +49,7 @@ function App() {
         note: doc.data().note,
         completed: doc.data().completed
       })))
+      setOriginalTaskItems(taskItems)
     })
   }, []);
 
@@ -58,6 +63,7 @@ function App() {
       completed: task.completed
     })
     setTaskItems([...taskItems, task]);
+    setOriginalTaskItems(taskItems)
     setModalVisible(!modalVisible);
   }
 
@@ -97,7 +103,7 @@ function App() {
           ></CategoriesView>
       </View>
       <View style={styles.search}>
-        <Search></Search>
+        <Search originalTaskItems={originalTaskItems} setTaskItems={setTaskItems}></Search>
       </View>
       <View style={styles.list}>
         <View style={styles.bar}>

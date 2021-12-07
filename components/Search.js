@@ -1,52 +1,32 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
-import db from '../firebase';
 
-class Search extends React.Component {
+export default function Search ({originalTaskItems, setTaskItems}) {    
 
-    
-    constructor(){
-      super();
-  
-      this.state={
-        search:null,
-        filteredItems:null
-      };
+    const searchSpace = (text)=>{
+        if(text == ''){
+            setTaskItems(originalTaskItems)        
+        }
+        else{
+            const filteredItems = originalTaskItems.filter((data)=>{
+                if(data.name.toLowerCase().includes(text.toLowerCase())){
+                    return data
+                }
+            })
+            setTaskItems(filteredItems)        
+        }
     }
-    
-
-    searchSpace=(event)=>{
-        let keyword = event.target.value;
-        this.setState({search:keyword})
-
-        const items = db.filter((data)=>{
-          if(this.state.search == null)
-              return data
-          else if(data.name.toLowerCase().includes(this.state.search.toLowerCase())){
-              return data
-          }
-        })
-
-        this.setState({filteredItems:items})
-        console.log("items",this.state.filteredItems)
-        
-    }
-       
   
-    render(){
-        
-        return(
-            <View style={styles.overviewContainer}>
-                <View style={styles.Title}>
-                    <Text style={styles.todaysTasks}>To Do List</Text>
-                </View>
-                <View style={styles.searchbar}>
-                <TextInput style={styles.searchitem} placeholder="Search" onChange={(e)=>this.searchSpace(e)}/>
-                {this.state.filteredItems}
-                </View>
+    return(
+        <View style={styles.overviewContainer}>
+            <View style={styles.Title}>
+                <Text style={styles.todaysTasks}>To Do List</Text>
             </View>
-        )   
-    }
+            <View style={styles.searchbar}>
+            <TextInput style={styles.searchitem} placeholder="Search" onChangeText={(text)=>searchSpace(text)}/>
+            </View>
+        </View>
+    )   
 }
 
 
@@ -89,5 +69,3 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     }
 });
-
-export default Search;
