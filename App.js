@@ -12,6 +12,7 @@ import CategoriesView from './components/CategoriesView';
 import Search from './components/Search';
 import db from './firebase';
 import firebase from 'firebase';
+import SortAs from './components/SortAs';
 
 function App() {
   const [taskItems, setTaskItems] = useState([]);
@@ -24,6 +25,14 @@ function App() {
 
   //variables for the add new task modal
   const [modalVisible, setModalVisible] = useState(false);
+
+  //editing a todo list item variables
+  const [willEdit, setWillEdit] = useState(true);
+  const [idToEdit, setIdToEdit] = useState('');
+  const [nameToEdit, setNameToEdit] = useState('');
+  const [dateToEdit, setDateToEdit] = useState('');
+  const [categToEdit, setCategToEdit] = useState('');
+  const [noteToEdit, setNoteToEdit] = useState('');
 
   //when the app loads, fetch the database
   useEffect(() => {
@@ -45,11 +54,28 @@ function App() {
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       date: task.date,
       category: task.category,
-      note:task.note,
+      note: task.note,
       completed: task.completed
     })
+    setTaskItems([...taskItems, task]);
+    setModalVisible(!modalVisible);
+  }
 
-    setTaskItems([...taskItems, task])
+  const dataToEdit = (data) => {
+    setIdToEdit(data.id);
+    setNameToEdit(data.name);
+    setDateToEdit(data.date);
+    setCategToEdit(data.category);
+    setNoteToEdit(data.note);
+  }
+
+  const handleUpdateTask = (task) => {
+    db.collection('todos').doc(idToEdit).set({
+      name: task.name,
+      date: task.date,
+      category: task.category,
+      note: task.note
+    }, {merge: true});
     setModalVisible(!modalVisible);
   }
 
@@ -65,20 +91,42 @@ function App() {
       </TopBar>
       </View>
       <View style={styles.overview}>
-        <CategoriesView isEdit={isEdit}></CategoriesView>
+        <CategoriesView 
+          isEdit={isEdit}
+          taskItems={taskItems}
+          ></CategoriesView>
       </View>
       <View style={styles.search}>
         <Search></Search>
       </View>
       <View style={styles.list}>
+        <View style={styles.bar}>
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
           handleAddTask = {handleAddTask}
+          willEdit={willEdit}
+          setWillEdit={setWillEdit}
+          nameToEdit={nameToEdit}
+          dateToEdit={dateToEdit}
+          categToEdit={categToEdit}
+          noteToEdit={noteToEdit}
+          handleUpdateTask={handleUpdateTask}
         > 
         </TodoInsert>
+        <SortAs taskItems={taskItems} setTaskItems={setTaskItems}></SortAs>
+        </View>
         <View style={styles.listWrapper}>
-          <TodoListItem taskItems={taskItems} isEdit={isEdit} setTaskItems={setTaskItems}/>
+          <TodoListItem 
+            taskItems={taskItems} 
+            isEdit={isEdit} 
+            setTaskItems={setTaskItems} 
+            modalVisible={modalVisible} 
+            setModalVisible={setModalVisible}
+            willEdit={willEdit}
+            setWillEdit={setWillEdit}
+            dataToEdit={dataToEdit}
+            />
        </View>
       </View>
     </SafeAreaView>
@@ -104,7 +152,7 @@ const styles = StyleSheet.create({
   },
   overview: {
     backgroundColor: '#F5F5F5',	
-    flex: 2,
+    flex: 2.5,
   },
   search: {
     backgroundColor: '#00462A',	
@@ -125,6 +173,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 24,
     marginLeft: 20,
+  },
+  bar:{
+    alignSelf: 'stretch',
+    height: 45,
+    flexDirection: 'row', // row
+    alignItems: 'center',
+    justifyContent: 'space-between', // center, space-around
+    paddingLeft: 10,
+    paddingRight: 10,
   }
 });
 
