@@ -102,7 +102,8 @@ function App() {
       <View style={styles.overview}>
         <CategoriesView 
           isEdit={isEdit}
-          taskItems={taskItems}
+          originalTaskItems={originalTaskItems}
+          setTaskItems={setTaskItems}
           percentage={percentage}
           setPercentage={setPercentage}
           ></CategoriesView>
