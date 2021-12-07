@@ -1,19 +1,24 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 
-export default function CategoriesView ({taskItems}) {
+export default function CategoriesView ({taskItems,setPercentage,percentage}) {
     const tasksComp = taskItems.filter(item => item.completed === true).length;
     const tasksIncomp = taskItems.filter(item => item.completed === false).length;
     const tasksHW = taskItems.filter(item => item.category === 'Homework').length;
-    const percent = Math.floor((tasksComp*100)/(tasksIncomp+tasksComp));
-
+    const percent=Math.floor((tasksComp*100)/(tasksIncomp+tasksComp));
+    
     const categButton=()=> {
         console.log("Category task Button pressed");
     }
     
+    useEffect(() => {
+        setPercentage(percent);
+      });
+    
+    
       return (
-          
+    
         <View style={styles.overviewContainer}>
             <View style={styles.taskCircleTitle}>  
                 <Text style={styles.todaysTasks}>Today's Tasks</Text>

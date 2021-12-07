@@ -37,6 +37,7 @@ function App() {
   const [dateToEdit, setDateToEdit] = useState('');
   const [categToEdit, setCategToEdit] = useState('');
   const [noteToEdit, setNoteToEdit] = useState('');
+  const[percentage,setPercentage]=useState(0);
 
   //when the app loads, fetch the database
   useEffect(() => {
@@ -94,6 +95,7 @@ function App() {
         setWingPageVisible={setWingPageVisible}
         isEdit={isEdit}
         setEditState={setEditState}
+        percentage={percentage}
       >
       </TopBar>
       </View>
@@ -101,6 +103,8 @@ function App() {
         <CategoriesView 
           isEdit={isEdit}
           taskItems={taskItems}
+          percentage={percentage}
+          setPercentage={setPercentage}
           ></CategoriesView>
       </View>
       <View style={styles.search}>
