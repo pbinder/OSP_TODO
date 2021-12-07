@@ -1,9 +1,14 @@
-import React from "react";
+import React , {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Modal from 'react-native-modal';
+import Wingpercentage from './Wingpercentage';
+
+
 
 export default function WingPage ({wingPageVisible, setWingPageVisible}) {   
       
+    const [taskItems, setTaskItems] = useState([]);
+    const [isEdit, setEditState] = useState(false);
     return (
         <View>
             <Modal
@@ -21,7 +26,12 @@ export default function WingPage ({wingPageVisible, setWingPageVisible}) {
                 <View style={styles.modalView}>
                 <Text style={styles.header}>(Someone's) Weekly Report</Text>
                 <View style={styles.shareBox}/>
-                <View style={styles.dataReport}/>
+                <View style={styles.dataReport}>
+                  <Wingpercentage 
+                  isEdit={isEdit}
+                  taskItems={taskItems}>
+                  </Wingpercentage>
+                </View>
                 <Text style={styles.modalText}>GOOD JOB!! ABSOLUTELY PERFECT</Text>
                 </View>
               </View>

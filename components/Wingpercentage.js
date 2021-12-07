@@ -1,63 +1,30 @@
-import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import ProgressCircle from 'react-native-progress-circle';
+import React  from "react";
+import { render } from "react-dom";
+import {View, StyleSheet, Text} from 'react-native';
+import ProgressBarLine from 'react-progressbar-line'
 
+export default function Percentage ({taskItems}){
 
-export default function CategoriesView ({taskItems}) {
     const tasksComp = taskItems.filter(item => item.completed === true).length;
     const tasksIncomp = taskItems.filter(item => item.completed === false).length;
-    const tasksHW = taskItems.filter(item => item.category === 'Homework').length;
     const percent = Math.floor((tasksComp*100)/(tasksIncomp+tasksComp));
 
-    const categButton=()=> {
-        console.log("Category task Button pressed");
-    }
-    
-      return (
-          
-        <View style={styles.overviewContainer}>
-            <View style={styles.taskCircleTitle}>  
+    return (
+        <View >
+            <View >  
                 <Text style={styles.todaysTasks}>Today's Tasks</Text>
             </View>
-            <View style={styles.upperRowContainer}>
+            <View>
                 <View style={styles.taskCompletion}>
-                    <ProgressCircle
-                    percent={percent}
-                    radius={45}
-                    borderWidth={10}
-                    color="#32CD32"
-                    shadowColor="#999"
-                    bgColor="#E8E8E8">
-                        <Text style={{fontSize: 17}}>{percent + "%"}</Text>
-                    </ProgressCircle>
-                </View>
-                <TouchableOpacity style={styles.upperCategoryBox} onPress={() =>categButton()}>
-                    <Text style={styles.categoryName}>Incomplete</Text>
-                    <Text style={styles.numOfTasks}>{tasksIncomp}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.upperCategoryBox} onPress={() =>categButton()}>
-                    <Text style={styles.categoryName}>Completed</Text>
-                    <Text style={styles.numOfTasks}>{tasksComp}</Text>
-                </TouchableOpacity>
-            </View>
+                <ProgressBarLine
+                value={percent}>
 
-            <View style={styles.lowerRowContainer}>
-                <TouchableOpacity style={styles.lowerCategoryBox} onPress={() =>categButton()}>
-                    <Text style={styles.categoryName}>All</Text>
-                    <Text style={styles.numOfTasks}>{tasksComp + tasksIncomp}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.lowerCategoryBox} onPress={() =>categButton()}>
-                    <Text style={styles.categoryName}>HW</Text>
-                    <Text style={styles.numOfTasks}>{tasksHW}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.lowerCategoryBox} onPress={() =>categButton()}>
-                    <Text style={styles.categoryName}>Priority</Text>
-                </TouchableOpacity>
+                </ProgressBarLine>
+                </View>
             </View>
         </View>        
-        );
-    
-};
+    )
+}
 
 const styles = StyleSheet.create({
     overviewContainer: {
