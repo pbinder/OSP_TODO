@@ -30,6 +30,7 @@ export default function SortAs({taskItems, setTaskItems}){
           let array=(taskItems.sort( (a,b)=>( a.name.toLowerCase()> b.name.toLowerCase() ) ? 1 : -1 ))
           let sorted=array.map(item=>{
             return{
+              adddate:item.adddate,
               name:item.name,
               date:item.date,
               category:item.category,
@@ -42,6 +43,7 @@ export default function SortAs({taskItems, setTaskItems}){
       let array=(taskItems.sort( (a,b)=>( b.adddate> a.adddate)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return{
+          adddate:item.adddate,
           name:item.name,
           date:item.date,
           category:item.category,
@@ -53,6 +55,7 @@ export default function SortAs({taskItems, setTaskItems}){
         let array=(taskItems.sort( (a,b)=>( a.adddate> b.adddate)  ? 1 : -1 ))
         let sorted=array.map(item=>{
           return{
+            adddate:item.adddate,
             name:item.name,
             date:item.date,
             category:item.category,
@@ -64,6 +67,7 @@ export default function SortAs({taskItems, setTaskItems}){
       let array=(taskItems.sort( (a,b)=>( a.date> b.date)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return{
+          adddate:item.adddate,
           name:item.name,
           date:item.date,
           category:item.category,
