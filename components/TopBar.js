@@ -4,14 +4,15 @@ import Moment from 'moment';
 import { StatusBar } from 'expo-status-bar';
 import WingPage from './WingPage';
 
-export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, setEditState}) {
+export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, setEditState,percentage}) {
  
     return (
     <View style={styles.precontainer}>
       <View style={styles.wingcontainer}>
         <WingPage
           wingPageVisible={wingPageVisible} 
-          setWingPageVisible={setWingPageVisible} >
+          setWingPageVisible={setWingPageVisible}
+          percentage={percentage} >
         </WingPage>
       </View>
       <View style={styles.container}>

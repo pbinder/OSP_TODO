@@ -5,7 +5,7 @@ import Wingpercentage from './Wingpercentage';
 
 
 
-export default function WingPage ({wingPageVisible, setWingPageVisible}) {   
+export default function WingPage ({wingPageVisible, setWingPageVisible,percentage}) {   
       
     const [taskItems, setTaskItems] = useState([]);
     const [isEdit, setEditState] = useState(false);
@@ -32,7 +32,15 @@ export default function WingPage ({wingPageVisible, setWingPageVisible}) {
                   taskItems={taskItems}>
                   </Wingpercentage>
                 </View>
-                <Text style={styles.modalText}>GOOD JOB!! ABSOLUTELY PERFECT</Text>
+                <View style={styles.dataReport}/>
+                <Text style={styles.modalText}>
+                      
+                      {(()=>{
+                        if (percentage==100) return 'Absolutely PERFECT!! Well Done';
+                        else if (percentage>=80) return 'Good Job! Keep up!!' ;
+                        else return 'You can do it!!';
+                      })()}
+                  </Text>
                 </View>
               </View>
             </Modal>
