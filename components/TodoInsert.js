@@ -55,7 +55,8 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       date: time, 
       category: category, 
       note: note,
-      completed: false 
+      completed: false,
+      duedate: date
     }
     handleAddTask(task);
   };
@@ -67,6 +68,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       date: time, 
       category: category, 
       note: note,
+      duedate: date
     }
     handleUpdateTask(task);
   };

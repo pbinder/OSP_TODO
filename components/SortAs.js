@@ -2,10 +2,9 @@ import React, {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-//import { Sort } from './constants/Sort';
 export default function SortAs({taskItems, setTaskItems}){
-    //const [sortBy, setSortBy] = useState(Sort[0]);
-    const sortMenu = ["Name", "CreationDate-Latest", "CreationDate-Earliest"]
+    
+    const sortMenu = ["Name", "Added Date (Earliest)","Added Date (Latest)",  "Due Date"]
     const inOrder = (index) => {
 
         switch(index){
@@ -13,10 +12,13 @@ export default function SortAs({taskItems, setTaskItems}){
             inAlphabeticalOrder();
             break;
           case 1:
-            inDateOrder();
+            inLatestDateOrder();
             break;
           case 2:
-            inRecentOrder();
+            inEarliestDateOrder();
+            break;
+          case 3:
+            inDueDateOrder();
             break;
           
         }
@@ -36,7 +38,7 @@ export default function SortAs({taskItems, setTaskItems}){
             }})
           setTaskItems(sorted);
     };
-    const inDateOrder = () => {
+    const inLatestDateOrder = () => {
       let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return{
@@ -47,8 +49,19 @@ export default function SortAs({taskItems, setTaskItems}){
           completed:item.completed
         }})
       setTaskItems(sorted);};
-    const inRecentOrder = () => {
-      let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
+      const inEarliestDateOrder = () => {
+        let array=(taskItems.sort( (a,b)=>( a.timeM> b.timeM)  ? 1 : -1 ))
+        let sorted=array.map(item=>{
+          return{
+            name:item.name,
+            date:item.date,
+            category:item.category,
+            note:item.note,
+            completed:item.completed
+          }})
+        setTaskItems(sorted);};
+    const inDueDateOrder = () => {
+      let array=(taskItems.sort( (a,b)=>( a.date> b.date)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return{
           name:item.name,
