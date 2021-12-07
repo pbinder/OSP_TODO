@@ -41,15 +41,16 @@ function App() {
   //when the app loads, fetch the database
   useEffect(() => {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      setTaskItems(snapshot.docs.map(doc => ({
+      const items = snapshot.docs.map(doc => ({
         id: doc.id, 
         name: doc.data().name, 
         date: doc.data().date,
         category: doc.data().category,
         note: doc.data().note,
         completed: doc.data().completed
-      })))
-      setOriginalTaskItems(taskItems)
+      }))
+      setTaskItems(items)
+      setOriginalTaskItems(items)
     })
   }, []);
 
