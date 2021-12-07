@@ -2,8 +2,9 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Modal from 'react-native-modal';
 
-export default function WingPage ({wingPageVisible, setWingPageVisible}) {   
+export default function WingPage ({wingPageVisible, setWingPageVisible,percentage}) {   
       
+  
     return (
         <View>
             <Modal
@@ -22,7 +23,14 @@ export default function WingPage ({wingPageVisible, setWingPageVisible}) {
                 <Text style={styles.header}>(Someone's) Weekly Report</Text>
                 <View style={styles.shareBox}/>
                 <View style={styles.dataReport}/>
-                <Text style={styles.modalText}>GOOD JOB!! ABSOLUTELY PERFECT</Text>
+                <Text style={styles.modalText}>
+                      
+                      {(()=>{
+                        if (percentage==100) return 'Absolutely PERFECT!! Well Done';
+                        else if (percentage>=80) return 'Good Job! Keep up!!' ;
+                        else return 'You can do it!!';
+                      })()}
+                  </Text>
                 </View>
               </View>
             </Modal>

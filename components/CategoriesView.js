@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import { Categories } from './constants/Categories';
@@ -6,7 +6,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 
 
 
-export default function CategoriesView ({isEdit, originalTaskItems, setTaskItems}) {
+export default function CategoriesView ({isEdit, originalTaskItems, setTaskItems, setPercentage, percentage}) {
     const [incompleteSelect, setIncomplete] = useState(false);
     const [completeSelect, setComplete] = useState(false);
     const [firstCatSelect, setFirstCat] = useState(false);
@@ -18,6 +18,9 @@ export default function CategoriesView ({isEdit, originalTaskItems, setTaskItems
     const [thirdCategoryName, setThirdCategoryName] = useState('Groceries');
 
 
+    useEffect(() => {
+        setPercentage(percent);
+      });
 
     const tasksComp = originalTaskItems.filter(item => item.completed === true).length;
     const tasksIncomp = originalTaskItems.filter(item => item.completed === false).length;
@@ -127,7 +130,7 @@ export default function CategoriesView ({isEdit, originalTaskItems, setTaskItems
     }
 
       return (
-          
+    
         <View style={styles.overviewContainer}>
             <View style={styles.taskCircleTitle}>  
                 <Text style={styles.todaysTasks}>Today's Tasks</Text>
