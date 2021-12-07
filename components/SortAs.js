@@ -39,7 +39,7 @@ export default function SortAs({taskItems, setTaskItems}){
           setTaskItems(sorted);
     };
     const inLatestDateOrder = () => {
-      let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
+      let array=(taskItems.sort( (a,b)=>( b.adddate> a.adddate)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return{
           name:item.name,
@@ -50,7 +50,7 @@ export default function SortAs({taskItems, setTaskItems}){
         }})
       setTaskItems(sorted);};
       const inEarliestDateOrder = () => {
-        let array=(taskItems.sort( (a,b)=>( a.timeM> b.timeM)  ? 1 : -1 ))
+        let array=(taskItems.sort( (a,b)=>( a.adddate> b.adddate)  ? 1 : -1 ))
         let sorted=array.map(item=>{
           return{
             name:item.name,

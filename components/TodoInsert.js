@@ -14,6 +14,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Modal from 'react-native-modal';
 
+
 export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, dateToEdit, noteToEdit, handleUpdateTask}) {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -22,7 +23,8 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   const [name, setName] = useState('');
   const [category, setCategory] = useState(Categories[0]);
   const [note, setNote] = useState('');
-
+  const [addDate, setAddDate]=useState(new Date());
+  
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
@@ -56,7 +58,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       category: category, 
       note: note,
       completed: false,
-      duedate: date
+      adddate: addDate
     }
     handleAddTask(task);
   };
@@ -68,7 +70,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       date: time, 
       category: category, 
       note: note,
-      duedate: date
+      adddate: addDate
     }
     handleUpdateTask(task);
   };
@@ -218,7 +220,8 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 {willEdit &&
                   <Pressable
                   style={[styles.buttonModal, styles.buttonSubmit]}
-                  onPress={() => updateTaskObject()}>
+                  onPress={() => updateTaskObject()}
+                  onPress={() => addDate=Date.now()}>
                   <Text style={styles.textStyle}>Submit</Text>
                 </Pressable>
                 }
