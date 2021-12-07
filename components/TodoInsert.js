@@ -55,7 +55,8 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       date: time, 
       category: category, 
       note: note,
-      completed: false 
+      completed: false,
+      duedate: date
     }
     handleAddTask(task);
   };
@@ -67,6 +68,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       date: time, 
       category: category, 
       note: note,
+      duedate: date
     }
     handleUpdateTask(task);
   };
@@ -294,12 +296,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   buttonSubmit: {
+    alignItems: 'center',
+    width:'21%',
     backgroundColor: '#2986cc',
     borderRadius: 8,
   },
   buttonCancel: {
+    alignItems: 'center',
+    width:'21%',
     borderRadius: 8,
-    backgroundColor: '#e92718',
+    backgroundColor: '#ee6c4d',
   },
   text: {
     color: '#fff',
