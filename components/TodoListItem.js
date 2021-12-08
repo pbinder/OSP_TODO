@@ -52,12 +52,18 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                     { !data.item.completed && 
                         <View style={styles.labelContainer}>
                             <Text style={styles.text}>{data.item.name}</Text>
+                            <Text style={styles.noteText}> 
+                            {(()=>{
+                            if (data.item.note=='') return '';
+                            else return data.item.note+'  ' ;
+                             })()}
+                            </Text>
                             <Text style={styles.dateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                         </View>
                       }
                     { data.item.completed &&
                         <View style={styles.labelContainer}>
-                            <Text style={styles.completedTaskText}>{data.item.name}</Text>
+                            <Text style={styles.completedTaskText}>{data.item.name} </Text>
                             <Text style={styles.completedDateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                         </View>
                     }
@@ -287,5 +293,18 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontSize: 14,
         textDecorationLine: 'line-through'
-    }    
+    }, 
+    noteCompletedText: {
+        color:'#8EBEBE',
+        fontWeight: '400',
+        fontSize: 14,
+        textDecorationLine: 'line-through'
+    },
+    noteText: {
+        color:'#7E7E7E',
+        fontWeight: '400',
+        fontSize: 14,
+        
+    } 
+
 });
