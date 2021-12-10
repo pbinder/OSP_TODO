@@ -6,20 +6,27 @@ import {
     TouchableHighlight,
     View,
     Pressable,
+    LogBox,
 } from 'react-native';
+import { CheckBox, List, ListItem } from 'react-native-elements';
 import db from '../firebase';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
+import SortableList from 'react-native-sortable-list';
+import MultiSelectSortableFlatlist from 'react-native-multiselect-sortable-flatlist';
 
 export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalVisible, modalVisible, setWillEdit, dataToEdit}) {
-
+    LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [checked, setChecked] = useState(false);
 
     const editTasksArray = taskItems.map( item => {
-        let label = item.name + '\n '+'due at ' + moment.unix(item.date.seconds).format('YYYY/MM/DD') + 
+        let label = item.name 
+        let date = '\ndue at ' + moment.unix(item.date.seconds).format('YYYY/MM/DD') + 
         ' at ' + moment.unix(item.date.seconds).format('HH:mm')
-        return {label: label, value: item.id}
+        let checked = false; 
+        return {label: label, date: date, value: item.id, checked: checked}
     })
 
     const onRowDidOpen = rowKey => {
@@ -103,23 +110,57 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         })
     };
 
-    const renderLabel = label => {
-        let split = label.split(" ")[0].trim();
-        let task; 
+    const checkedd= (id) => {
+        let its = editTasksArray.map( item => {
+            if(item.value === id) item.checked = !item.checked;
+            return item.checked
+        });
+        
+        //setSelectedItems(id);
+        console.log(id + " " + its)
+    }
+
+    const get = (id) => {
+        let ok;
+        editTasksArray.map(item => {
+            if(item.value === id) ok = item.checked;
+            //console.log(item.checked)
+            return ok
+        });
+        console.log(ok)
+    }
+    
+
+    const renderLabel = data => {
+        let task, ity; 
         taskItems.map(item => {
-            if (item.name === split) task = item.completed;
+            if (item.name === data.data.label) task = item.completed;
             return item.completed
         });
+       
+        
+        //console.log(data.data.label);
         return (
-          <View style={styles.multiSelectContainer}>
-              {!task &&
-                  <Text style={styles.label}>{label}</Text>
-              }
-              {task &&
-                  <Text style={ styles.labelCompleted }>{label}</Text>
-              }
-          </View>
+            <View style={[styles.rowFront, styles.aligner]} underlayColor={'#AAA'}>
+                <View style={styles.multiSelectContainer}>
+                    <CheckBox 
+                    checked={() => get(data.data.value)}
+                    key = {data.data.value}
+                    onPress={() => checkedd(data.data.value)}
+                    />
+                    { !task &&
+                        <Text style={styles.label}>{data.data.label + data.data.date}</Text>
+                    }
+                    { task &&
+                        <Text style={ styles.labelCompleted }>{data.data.label + data.data.date}</Text>
+                    }
+                </View>
+            </View>      
         )
+      }
+
+      const setArray = () => {
+        console.log(editTasksArray)
       }
   
     return (
@@ -157,16 +198,18 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         </View>
         }
         { isEdit &&
-        <View style={styles.multiSelectContainer}>
-            <SelectMultiple
-                items={editTasksArray}
+        <View>  
+            <SortableList
+                data={editTasksArray}
                 keyExtractor={(item, index) => `${index}`}
-                selectedItems={selectedItems}
-                onSelectionsChange={setSelectedItems}
-                renderLabel={renderLabel}
-                rowStyle={styles.rowStyle}
-                />
-        </View>          
+                renderRow={renderLabel}
+                style={styles.rowStyle}
+                contentContainerStyle={styles.multiSelectContainer}
+                onChangeOrder={()=>setArray()}
+            >
+                
+                </SortableList>  
+            </View>     
         }
         </View>
     );
@@ -182,15 +225,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        
         paddingLeft: 10,
     },
     multiSelectContainer: {
         marginLeft: 10,
         marginRight: 10,
+        flexDirection: 'row'
       },
       rowStyle: {
-        height: 60,
+        height: '88.5%',
       },
     itemLeft: {
         flexDirection: 'row',
@@ -221,6 +265,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 55,
         paddingLeft: 12,
+    },
+    aligner: {
+        alignItems: 'flex-start',
+        paddingLeft: 0,
     },
     rowBack: {
         alignItems: 'center',
@@ -255,13 +303,15 @@ const styles = StyleSheet.create({
         paddingLeft: 25,
         fontWeight: '500',
         fontSize: 16,
+        paddingTop: 6
     },
     labelCompleted:{
         paddingLeft: 25,
         fontWeight: '500',
         fontSize: 16,
         textDecorationLine: 'line-through',
-        color:'#8EBEBE'
+        color:'#8EBEBE',
+        paddingTop: 6
     },
     text: {
         fontWeight: '500',
