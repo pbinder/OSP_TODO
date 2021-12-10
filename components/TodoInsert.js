@@ -235,7 +235,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
         </Modal>
         <Pressable
           style={[styles.button]}
-          onPress={() => {setWillEdit(false), setModalVisible(true)}}>
+          onPress={() => {setModalVisible(true), setWillEdit(false)}}>
           <Text style={styles.text}>+ add new task</Text>
         </Pressable>
       </View>

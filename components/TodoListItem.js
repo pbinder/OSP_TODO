@@ -8,26 +8,15 @@ import {
     Pressable,
     LogBox,
 } from 'react-native';
-import { CheckBox, List, ListItem } from 'react-native-elements';
 import db from '../firebase';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
-import SortableList from 'react-native-sortable-list';
 import MultiSelectSortableFlatlist from 'react-native-multiselect-sortable-flatlist';
 
-export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalVisible, modalVisible, setWillEdit, dataToEdit}) {
+export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalVisible, modalVisible, setWillEdit, dataToEdit, otherTaskItems, setOtherTaskItems}) {
+    
     LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
     const [selectedItems, setSelectedItems] = useState([]);
-    const [checked, setChecked] = useState(false);
-
-    const editTasksArray = taskItems.map( item => {
-        let label = item.name 
-        let date = '\ndue at ' + moment.unix(item.date.seconds).format('YYYY/MM/DD') + 
-        ' at ' + moment.unix(item.date.seconds).format('HH:mm')
-        let checked = false; 
-        return {label: label, date: date, value: item.id, checked: checked}
-    })
 
     const onRowDidOpen = rowKey => {
         console.log('This row opened', rowKey);
@@ -99,8 +88,9 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
     };
 
     const deleteSelectedItems = () => {
+        console.log(selectedItems)
         selectedItems.forEach(item => {
-          db.collection('todos').doc(item.value).delete();
+          db.collection('todos').doc(item.id).delete();
         })
     };
 
@@ -110,57 +100,47 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         })
     };
 
-    const checkedd= (id) => {
-        let its = editTasksArray.map( item => {
-            if(item.value === id) item.checked = !item.checked;
-            return item.checked
-        });
-        
-        //setSelectedItems(id);
-        console.log(id + " " + its)
-    }
-
-    const get = (id) => {
-        let ok;
-        editTasksArray.map(item => {
-            if(item.value === id) ok = item.checked;
-            //console.log(item.checked)
-            return ok
-        });
-        console.log(ok)
-    }
-    
-
     const renderLabel = data => {
-        let task, ity; 
+        let task; 
         taskItems.map(item => {
-            if (item.name === data.data.label) task = item.completed;
+            if (item.name === data.item.name) task = item.completed;
             return item.completed
         });
-       
-        
-        //console.log(data.data.label);
+        //console.log(data)
         return (
             <View style={[styles.rowFront, styles.aligner]} underlayColor={'#AAA'}>
-                <View style={styles.multiSelectContainer}>
-                    <CheckBox 
-                    checked={() => get(data.data.value)}
-                    key = {data.data.value}
-                    onPress={() => checkedd(data.data.value)}
-                    />
+                <View>
                     { !task &&
-                        <Text style={styles.label}>{data.data.label + data.data.date}</Text>
+                        <View>
+                            <Text style={styles.label}>{data.item.name}</Text>
+                            <Text style={[styles.label, styles.dateText]}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} 
+                            at {moment.unix(data.item.date.seconds).format('HH:mm')}</Text>
+                        </View>
                     }
                     { task &&
-                        <Text style={ styles.labelCompleted }>{data.data.label + data.data.date}</Text>
+                    <View>
+                        <Text style={ styles.labelCompleted }>{data.item.name}</Text>
+                        <Text style={[styles.dateText, styles.labelCompleted]}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} 
+                            at {moment.unix(data.item.date.seconds).format('HH:mm')}</Text>
+                    </View>
                     }
                 </View>
-            </View>      
+            </View> 
         )
       }
 
-      const setArray = () => {
-        console.log(editTasksArray)
+      const onItemPress = (item) => {
+          console.log(item.name)
+      }
+
+      const onSelectionChanged = (selectedItems) => {
+        setSelectedItems(selectedItems);
+        console.log(selectedItems)
+      }
+
+      const onSort = (newArray) => {
+        setTaskItems(newArray);
+        setOtherTaskItems(newArray);
       }
   
     return (
@@ -169,15 +149,13 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         <View style={styles.deleteHeader}>
             <Pressable
                 style={styles.button}
-                onPress={() => deleteSelectedItems()}
-            >
+                onPress={() => deleteSelectedItems()}>
                 <Text style={styles.deleteText}>delete selected</Text>
             </Pressable>
             
             <Pressable
                 style={styles.button}
-                onPress={() => deleteAllItems()}
-            >
+                onPress={() => deleteAllItems()}>
                 <Text style={styles.deleteText}>delete all</Text>
             </Pressable>
         </View>
@@ -192,30 +170,31 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                 renderHiddenItem={renderHiddenItem}
                 rightOpenValue={-150}
                 onRowDidOpen={onRowDidOpen}
-                disableRightSwipe={true}
-            >
-            </SwipeListView>
+                disableRightSwipe={true}/>
         </View>
         }
         { isEdit &&
-        <View>  
-            <SortableList
-                data={editTasksArray}
-                keyExtractor={(item, index) => `${index}`}
-                renderRow={renderLabel}
-                style={styles.rowStyle}
-                contentContainerStyle={styles.multiSelectContainer}
-                onChangeOrder={()=>setArray()}
-            >
-                
-                </SortableList>  
-            </View>     
+        <View style={styles.editList}>
+            <MultiSelectSortableFlatlist
+            data={otherTaskItems}
+            keyExtractor={(item, index) => `${index}`}
+            renderItem={renderLabel}
+            onItemTap={({ item, index }) => onItemPress(item)}
+            onItemSelected={({ selectedItems, item, index }) => onSelectionChanged(selectedItems)}
+            onItemDeselected={({ selectedItems, item, index }) => onSelectionChanged(selectedItems)}
+            onSort={data => onSort(data)}/>
+        </View>
         }
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    editList: {
+        height: '83.5%',
+        marginLeft: 10,
+        marginRight: 10,
+    },
     container: {
       marginLeft: 10,
       marginRight: 10,
@@ -267,8 +246,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
     },
     aligner: {
-        alignItems: 'flex-start',
-        paddingLeft: 0,
+        alignItems: 'flex-start'
     },
     rowBack: {
         alignItems: 'center',

@@ -20,6 +20,7 @@ function App() {
 
   //needed for filtering to remeber the original items
   const [originalTaskItems, setOriginalTaskItems] = useState([]);
+  const [otherTaskItems, setOtherTaskItems] = useState([]);
 
   //variables for wing page
   const [wingPageVisible, setWingPageVisible] = useState(false);
@@ -37,7 +38,7 @@ function App() {
   const [dateToEdit, setDateToEdit] = useState('');
   const [categToEdit, setCategToEdit] = useState('');
   const [noteToEdit, setNoteToEdit] = useState('');
-  const[percentage,setPercentage]=useState(0);
+  const [percentage,setPercentage]=useState(0);
 
   //when the app loads, fetch the database
   useEffect(() => {
@@ -52,6 +53,7 @@ function App() {
       }))
       setTaskItems(items)
       setOriginalTaskItems(items)
+      setOtherTaskItems(items)
     })
   }, []);
 
@@ -66,6 +68,7 @@ function App() {
     })
     setTaskItems([...taskItems, task]);
     setOriginalTaskItems(taskItems)
+    setOtherTaskItems(taskItems)
     setModalVisible(!modalVisible);
   }
 
@@ -138,6 +141,8 @@ function App() {
             willEdit={willEdit}
             setWillEdit={setWillEdit}
             dataToEdit={dataToEdit}
+            otherTaskItems={otherTaskItems}
+            setOtherTaskItems={setOtherTaskItems}
             />
        </View>
       </View>
