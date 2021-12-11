@@ -20,7 +20,6 @@ function App() {
 
   //needed for filtering to remeber the original items
   const [originalTaskItems, setOriginalTaskItems] = useState([]);
-  const [otherTaskItems, setOtherTaskItems] = useState([]);
 
   //variables for wing page
   const [wingPageVisible, setWingPageVisible] = useState(false);
@@ -53,7 +52,6 @@ function App() {
       }))
       setTaskItems(items)
       setOriginalTaskItems(items)
-      setOtherTaskItems(items)
     })
   }, []);
 
@@ -68,7 +66,6 @@ function App() {
     })
     setTaskItems([...taskItems, task]);
     setOriginalTaskItems(taskItems)
-    setOtherTaskItems(taskItems)
     setModalVisible(!modalVisible);
   }
 
@@ -129,7 +126,7 @@ function App() {
           handleUpdateTask={handleUpdateTask}
         > 
         </TodoInsert>
-        <SortAs taskItems={taskItems} setTaskItems={setTaskItems}></SortAs>
+        <SortAs taskItems={taskItems} setTaskItems={setTaskItems} originalTaskItems={originalTaskItems}></SortAs>
         </View>
         <View style={styles.listWrapper}>
           <TodoListItem 
@@ -141,8 +138,8 @@ function App() {
             willEdit={willEdit}
             setWillEdit={setWillEdit}
             dataToEdit={dataToEdit}
-            otherTaskItems={otherTaskItems}
-            setOtherTaskItems={setOtherTaskItems}
+            originalTaskItems={originalTaskItems}
+            setOriginalTaskItems={setOriginalTaskItems}
             />
        </View>
       </View>

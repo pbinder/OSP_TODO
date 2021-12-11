@@ -113,7 +113,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                
               {show && (
                 <DateTimePicker
-                style={{width:'25%'}}
+                style={{width:'25%', marginLeft: '5.5%'}}
                 value={date}
                 mode={mode}
                 is24Hour={true}
