@@ -4,16 +4,18 @@ import Moment from 'moment';
 import { StatusBar } from 'expo-status-bar';
 import WingPage from './WingPage';
 
-export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, setEditState,percentage}) {
+export default function TopBar ({wingPageVisible, setWingPageVisible, isEdit, setEditState,percentage, originalTaskItems}) {
  
-    return (
-    <View style={styles.precontainer}>
-      <View style={styles.wingcontainer}>
-        <WingPage
-          wingPageVisible={wingPageVisible} 
-          setWingPageVisible={setWingPageVisible}
-          percentage={percentage} >
-        </WingPage>
+  return (
+  <View style={styles.precontainer}>
+    <View style={styles.wingcontainer}>
+      <WingPage
+        wingPageVisible={wingPageVisible} 
+        setWingPageVisible={setWingPageVisible}
+        percentage={percentage} 
+        originalTaskItems={originalTaskItems}
+        >
+      </WingPage>
       </View>
       <View style={styles.container}>
         <Pressable style={styles.circle} onPress={() => setWingPageVisible(true)} underlayColor = '#000'>
