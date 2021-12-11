@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import db from '../firebase';
 
 export default function SortAs({taskItems, setTaskItems}){
     
@@ -24,6 +25,17 @@ export default function SortAs({taskItems, setTaskItems}){
     };
    
     const inAlphabeticalOrder = () => { 
+      /*db.collection('todos').orderBy('name', 'asc').onSnapshot(snapshot => {
+        const items = snapshot.docs.map(doc => ({
+          id: doc.id, 
+          name: doc.data().name, 
+          date: doc.data().date,
+          category: doc.data().category,
+          note: doc.data().note,
+          completed: doc.data().completed
+        }))
+        setTaskItems(items)
+      })*/
           let array=(taskItems.sort( (a,b)=>( a.name.toLowerCase()> b.name.toLowerCase() ) ? 1 : -1 ))
           let sorted=array.map(item=>{
             return item
@@ -31,22 +43,59 @@ export default function SortAs({taskItems, setTaskItems}){
           setTaskItems(sorted);
     };
     const inLatestDateOrder = () => {
+      /*db.collection('todos').orderBy('timestamp', 'asc').onSnapshot(snapshot => {
+        const items = snapshot.docs.map(doc => ({
+          id: doc.id, 
+          name: doc.data().name, 
+          date: doc.data().date,
+          category: doc.data().category,
+          note: doc.data().note,
+          completed: doc.data().completed
+        }))
+        setTaskItems(items)
+      })*/
       let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return item })
-      setTaskItems(sorted);};
+      setTaskItems(sorted);
+    };
       
       const inEarliestDateOrder = () => {
+        /*db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+          const items = snapshot.docs.map(doc => ({
+            id: doc.id, 
+            name: doc.data().name, 
+            date: doc.data().date,
+            category: doc.data().category,
+            note: doc.data().note,
+            completed: doc.data().completed
+          }))
+          setTaskItems(items)
+        })*/
         let array=(taskItems.sort( (a,b)=>( a.timeM> b.timeM)  ? 1 : -1 ))
         let sorted=array.map(item=>{
           return item })
-        setTaskItems(sorted);};
+        setTaskItems(sorted);
+      };
 
     const inDueDateOrder = () => {
+      /*db.collection('todos').orderBy('date', 'asc').onSnapshot(snapshot => {
+        const items = snapshot.docs.map(doc => ({
+          id: doc.id, 
+          name: doc.data().name, 
+          date: doc.data().date,
+          category: doc.data().category,
+          note: doc.data().note,
+          completed: doc.data().completed
+        }))
+        setTaskItems(items)
+      })*/
+
       let array=(taskItems.sort( (a,b)=>( a.date> b.date)  ? 1 : -1 ))
       let sorted=array.map(item=>{
         return item })
-      setTaskItems(sorted);};
+      setTaskItems(sorted);
+    };
 
     return(
         <SelectDropdown
