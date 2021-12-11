@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 export default function SortAs({taskItems, setTaskItems}){
     
     const sortMenu = ["Name", "Added Date (Earliest)","Added Date (Latest)",  "Due Date"]
@@ -25,47 +26,26 @@ export default function SortAs({taskItems, setTaskItems}){
     const inAlphabeticalOrder = () => { 
           let array=(taskItems.sort( (a,b)=>( a.name.toLowerCase()> b.name.toLowerCase() ) ? 1 : -1 ))
           let sorted=array.map(item=>{
-            return{
-              name:item.name,
-              date:item.date,
-              category:item.category,
-              note:item.note,
-              completed:item.completed
-            }})
+            return item
+          })
           setTaskItems(sorted);
     };
     const inLatestDateOrder = () => {
       let array=(taskItems.sort( (a,b)=>( b.timeM> a.timeM)  ? 1 : -1 ))
       let sorted=array.map(item=>{
-        return{
-          name:item.name,
-          date:item.date,
-          category:item.category,
-          note:item.note,
-          completed:item.completed
-        }})
+        return item })
       setTaskItems(sorted);};
+      
       const inEarliestDateOrder = () => {
         let array=(taskItems.sort( (a,b)=>( a.timeM> b.timeM)  ? 1 : -1 ))
         let sorted=array.map(item=>{
-          return{
-            name:item.name,
-            date:item.date,
-            category:item.category,
-            note:item.note,
-            completed:item.completed
-          }})
+          return item })
         setTaskItems(sorted);};
+
     const inDueDateOrder = () => {
       let array=(taskItems.sort( (a,b)=>( a.date> b.date)  ? 1 : -1 ))
       let sorted=array.map(item=>{
-        return{
-          name:item.name,
-          date:item.date,
-          category:item.category,
-          note:item.note,
-          completed:item.completed
-        }})
+        return item })
       setTaskItems(sorted);};
 
     return(

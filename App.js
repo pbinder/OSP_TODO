@@ -37,7 +37,7 @@ function App() {
   const [dateToEdit, setDateToEdit] = useState('');
   const [categToEdit, setCategToEdit] = useState('');
   const [noteToEdit, setNoteToEdit] = useState('');
-  const[percentage,setPercentage]=useState(0);
+  const [percentage,setPercentage]=useState(0);
 
   //when the app loads, fetch the database
   useEffect(() => {
@@ -126,7 +126,7 @@ function App() {
           handleUpdateTask={handleUpdateTask}
         > 
         </TodoInsert>
-        <SortAs taskItems={taskItems} setTaskItems={setTaskItems}></SortAs>
+        <SortAs taskItems={taskItems} setTaskItems={setTaskItems} originalTaskItems={originalTaskItems}></SortAs>
         </View>
         <View style={styles.listWrapper}>
           <TodoListItem 
@@ -138,6 +138,8 @@ function App() {
             willEdit={willEdit}
             setWillEdit={setWillEdit}
             dataToEdit={dataToEdit}
+            originalTaskItems={originalTaskItems}
+            setOriginalTaskItems={setOriginalTaskItems}
             />
        </View>
       </View>
