@@ -28,7 +28,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         let tempArr = taskItems.map(item => {
             if (item.id == task.id) {
                 task.completed = !task.completed;
-                /* db.collection('todos').doc(task.id).update({
+                /*db.collection('todos').doc(task.id).update({
                     completed: task.completed
                 });*/
             }
@@ -190,14 +190,14 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
 
 const styles = StyleSheet.create({
     editList: {
-        height: '83.5%',
+        height: '85.5%',
         marginLeft: 10,
         marginRight: 10,
     },
     container: {
       marginLeft: 10,
       marginRight: 10,
-      marginBottom: '15%'
+      marginBottom: '11%',
     },
     subcontainer: {
         flex: 1,

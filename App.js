@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -41,7 +41,9 @@ function App() {
 
   //when the app loads, fetch the database
   useEffect(() => {
+    let isMounted = true; 
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+      if (isMounted) {
       const items = snapshot.docs.map(doc => ({
         id: doc.id, 
         name: doc.data().name, 
@@ -52,6 +54,8 @@ function App() {
       }))
       setTaskItems(items)
       setOriginalTaskItems(items)
+      return () => { isMounted = false };
+    }    
     })
   }, []);
 
@@ -63,10 +67,11 @@ function App() {
       category: task.category,
       note: task.note,
       completed: task.completed
-    })
+    })  
     setTaskItems([...taskItems, task]);
     setOriginalTaskItems(taskItems)
     setModalVisible(!modalVisible);
+
   }
 
   const dataToEdit = (data) => {
@@ -88,6 +93,8 @@ function App() {
   }
 
   return (
+    <Fragment>
+    <SafeAreaView style={{flex:0, backgroundColor: 'lightgrey'}}></SafeAreaView>
     <SafeAreaView style={styles.container}>
       <View style={styles.barcontainer} >
       <TopBar
@@ -144,6 +151,7 @@ function App() {
        </View>
       </View>
     </SafeAreaView>
+    </Fragment>
   );
 };
 
@@ -152,6 +160,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     paddingTop: StatusBar.currentHeight,
+    backgroundColor: '#00462A',
   },
   barcontainer: {
     height: 55,
