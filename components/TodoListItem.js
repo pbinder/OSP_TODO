@@ -6,33 +6,31 @@ import {
     TouchableHighlight,
     View,
     Pressable,
+    LogBox,
 } from 'react-native';
 import db from '../firebase';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
+import MultiSelectSortableFlatlist from 'react-native-multiselect-sortable-flatlist';
+import { CheckBox } from 'react-native-elements';
 
-export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalVisible, modalVisible, setWillEdit, dataToEdit}) {
-
+export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalVisible, modalVisible, setWillEdit, dataToEdit, originalTaskItems, setOriginalTaskItems}) {
+    
+    LogBox.ignoreAllLogs();
+    LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
     const [selectedItems, setSelectedItems] = useState([]);
-
-    const editTasksArray = taskItems.map( item => {
-        let label = item.name + '\n '+'due at ' + moment.unix(item.date.seconds).format('YYYY/MM/DD') + 
-        ' at ' + moment.unix(item.date.seconds).format('HH:mm')
-        return {label: label, value: item.id}
-    })
 
     const onRowDidOpen = rowKey => {
         console.log('This row opened', rowKey);
     };
-
+    
     const completeTask = task => {
         let tempArr = taskItems.map(item => {
             if (item.id == task.id) {
                 task.completed = !task.completed;
-                db.collection('todos').doc(task.id).set({
+                /* db.collection('todos').doc(task.id).update({
                     completed: task.completed
-                }, {merge: true});
+                });*/
             }
             return item
         })
@@ -46,18 +44,24 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
             underlayColor={'#AAA'}>
             <View style={styles.subcontainer}>
                 <View style={styles.itemLeft}>
-                    <TouchableOpacity style={styles.circle}onPress={() => completeTask(data.item)}></TouchableOpacity>
+                    <TouchableOpacity style={styles.circle} onPress={() => completeTask(data.item)}></TouchableOpacity>
                 </View>
                 <View >
                     { !data.item.completed && 
                         <View style={styles.labelContainer}>
                             <Text style={styles.text}>{data.item.name}</Text>
+                            <Text style={styles.noteText}> 
+                            {(()=>{
+                            if (data.item.note=='') return '';
+                            else return data.item.note+'  ' ;
+                             })()}
+                            </Text>
                             <Text style={styles.dateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                         </View>
                       }
                     { data.item.completed &&
                         <View style={styles.labelContainer}>
-                            <Text style={styles.completedTaskText}>{data.item.name}</Text>
+                            <Text style={styles.completedTaskText}>{data.item.name} </Text>
                             <Text style={styles.completedDateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                         </View>
                     }
@@ -86,8 +90,9 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
     };
 
     const deleteSelectedItems = () => {
+        console.log(selectedItems)
         selectedItems.forEach(item => {
-          db.collection('todos').doc(item.value).delete();
+          db.collection('todos').doc(item.id).delete();
         })
     };
 
@@ -97,23 +102,45 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         })
     };
 
-    const renderLabel = label => {
-        let split = label.split(" ")[0].trim();
+    const renderLabel = (item,index,selected) => {
         let task; 
-        taskItems.map(item => {
-            if (item.name === split) task = item.completed;
-            return item.completed
+        taskItems.map(data => {
+            if (data.name === item.name) task = data.completed;
+            return data.completed
         });
         return (
-          <View style={styles.multiSelectContainer}>
-              {!task &&
-                  <Text style={styles.label}>{label}</Text>
-              }
-              {task &&
-                  <Text style={ styles.labelCompleted }>{label}</Text>
-              }
-          </View>
+            //style={selected ? [styles.rowFront, styles.aligner, styles.colored] : [styles.rowFront, styles.aligner]
+            <View style={[styles.rowFront, styles.aligner]}>
+                <View style={styles.order}>
+                    <CheckBox
+                    disabled
+                    checked={selected}/>
+                    { !task &&
+                        <View>
+                            <Text style={styles.label}>{item.name}</Text>
+                            <Text style={[styles.label, styles.dateText]}>due at {moment.unix(item.date.seconds).format('YYYY/MM/DD')} 
+                            at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
+                        </View>
+                    }
+                    { task &&
+                    <View>
+                        <Text style={ styles.labelCompleted }>{item.name}</Text>
+                        <Text style={[styles.labelCompleted, styles.dateText]}>due at {moment.unix(item.date.seconds).format('YYYY/MM/DD')} 
+                            at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
+                    </View>
+                    }
+                </View>
+            </View> 
         )
+      }
+
+      const onSelectionChanged = (selectedItems) => {
+        setSelectedItems(selectedItems);
+      }
+
+      const onSort = (newArray) => {
+        setTaskItems(newArray);
+        setOriginalTaskItems(newArray);
       }
   
     return (
@@ -122,15 +149,13 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         <View style={styles.deleteHeader}>
             <Pressable
                 style={styles.button}
-                onPress={() => deleteSelectedItems()}
-            >
+                onPress={() => deleteSelectedItems()}>
                 <Text style={styles.deleteText}>delete selected</Text>
             </Pressable>
             
             <Pressable
                 style={styles.button}
-                onPress={() => deleteAllItems()}
-            >
+                onPress={() => deleteAllItems()}>
                 <Text style={styles.deleteText}>delete all</Text>
             </Pressable>
         </View>
@@ -145,28 +170,30 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                 renderHiddenItem={renderHiddenItem}
                 rightOpenValue={-150}
                 onRowDidOpen={onRowDidOpen}
-                disableRightSwipe={true}
-            >
-            </SwipeListView>
+                disableRightSwipe={true}/>
         </View>
         }
         { isEdit &&
-        <View style={styles.multiSelectContainer}>
-            <SelectMultiple
-                items={editTasksArray}
-                keyExtractor={(item, index) => `${index}`}
-                selectedItems={selectedItems}
-                onSelectionsChange={setSelectedItems}
-                renderLabel={renderLabel}
-                rowStyle={styles.rowStyle}
-                />
-        </View>          
+        <View style={styles.editList}>
+            <MultiSelectSortableFlatlist
+            data={originalTaskItems}
+            keyExtractor={(item, index) => `${index}`}
+            renderItem={({item, index, selected}) => renderLabel(item, index, selected)}
+            onItemSelected={({ selectedItems, item, index }) => onSelectionChanged(selectedItems)}
+            onItemDeselected={({ selectedItems, item, index }) => onSelectionChanged(selectedItems)}
+            onSort={data => onSort(data)}/>
+        </View>
         }
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    editList: {
+        height: '83.5%',
+        marginLeft: 10,
+        marginRight: 10,
+    },
     container: {
       marginLeft: 10,
       marginRight: 10,
@@ -176,15 +203,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        
         paddingLeft: 10,
     },
     multiSelectContainer: {
         marginLeft: 10,
         marginRight: 10,
+        flexDirection: 'row'
       },
       rowStyle: {
-        height: 60,
+        height: '88.5%',
       },
     itemLeft: {
         flexDirection: 'row',
@@ -215,6 +243,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 55,
         paddingLeft: 12,
+    },
+    aligner: {
+        alignItems: 'flex-start'
+    },
+    colored: {
+        backgroundColor: 'lightgrey'
+    },
+    order: {
+        flexDirection: 'row',
     },
     rowBack: {
         alignItems: 'center',
@@ -249,13 +286,15 @@ const styles = StyleSheet.create({
         paddingLeft: 25,
         fontWeight: '500',
         fontSize: 16,
+        paddingTop: 6
     },
     labelCompleted:{
         paddingLeft: 25,
         fontWeight: '500',
         fontSize: 16,
         textDecorationLine: 'line-through',
-        color:'#8EBEBE'
+        color:'#8EBEBE',
+        paddingTop: 6
     },
     text: {
         fontWeight: '500',
@@ -287,5 +326,18 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontSize: 14,
         textDecorationLine: 'line-through'
-    }    
+    }, 
+    noteCompletedText: {
+        color:'#8EBEBE',
+        fontWeight: '400',
+        fontSize: 14,
+        textDecorationLine: 'line-through'
+    },
+    noteText: {
+        color:'#7E7E7E',
+        fontWeight: '400',
+        fontSize: 14,
+        
+    } 
+
 });

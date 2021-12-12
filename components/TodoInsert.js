@@ -113,7 +113,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                
               {show && (
                 <DateTimePicker
-                style={{width:'25%'}}
+                style={{width:'25%', marginLeft: '5.5%'}}
                 value={date}
                 mode={mode}
                 is24Hour={true}
@@ -235,7 +235,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
         </Modal>
         <Pressable
           style={[styles.button]}
-          onPress={() => {setWillEdit(false), setModalVisible(true)}}>
+          onPress={() => {setModalVisible(true), setWillEdit(false)}}>
           <Text style={styles.text}>+ add new task</Text>
         </Pressable>
       </View>

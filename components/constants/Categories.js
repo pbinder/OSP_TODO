@@ -2,6 +2,5 @@ export const Categories = [
     'Homework',
     'Groceries',
     'Leisure',
-    'University',
-    'Priority'
+    'University'
 ]

@@ -13,7 +13,7 @@ export default function CategoriesView ({isEdit, originalTaskItems, setTaskItems
     const [secondCatSelect, setSecondCat] = useState(false);
     const [thirdCatSelect, setThirdCat] = useState(false);
     
-    const [firstCategoryName, setFirstCategoryName] = useState('Priority');
+    const [firstCategoryName, setFirstCategoryName] = useState('University');
     const [secondCategoryName, setSecondCategoryName] = useState('Homework');
     const [thirdCategoryName, setThirdCategoryName] = useState('Groceries');
 
