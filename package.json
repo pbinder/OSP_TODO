@@ -20,15 +20,17 @@
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-modal": "^13.0.0",
+    "react-native-paper": "^4.11.0",
+    "react-native-progress": "^5.0.0",
     "react-native-multiselect-sortable-flatlist": "^1.0.5",
-    "react-native-paper": "^4.10.1",
     "react-native-progress-circle": "^2.1.0",
     "react-native-reanimated": "^2.2.4",
     "react-native-select-dropdown": "^1.4.0",
     "react-native-svg": "^12.1.1",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-vector-icons": "^9.0.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "react-progressbar-line": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
