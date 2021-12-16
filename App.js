@@ -188,9 +188,8 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   listWrapper: {
-    height: '100%',
+    height: '98%',
   },
-  
   input: {
     padding: 20,
     borderBottomColor: '#bbb',
@@ -201,9 +200,9 @@ const styles = StyleSheet.create({
   bar:{
     alignSelf: 'stretch',
     height: 45,
-    flexDirection: 'row', // row
+    flexDirection: 'row', 
     alignItems: 'center',
-    justifyContent: 'space-between', // center, space-around
+    justifyContent: 'space-between', 
     paddingLeft: 10,
     paddingRight: 10,
   }
