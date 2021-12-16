@@ -103,6 +103,7 @@ function App() {
         isEdit={isEdit}
         setEditState={setEditState}
         percentage={percentage}
+        originalTaskItems={originalTaskItems}
       >
       </TopBar>
       </View>
