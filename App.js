@@ -94,7 +94,7 @@ function App() {
 
   return (
     <Fragment>
-    <SafeAreaView style={{flex:0, backgroundColor: 'lightgrey'}}></SafeAreaView>
+    <SafeAreaView style={{flex:0, backgroundColor: 'white'}}></SafeAreaView>
     <SafeAreaView style={styles.container}>
       <View style={styles.barcontainer} >
       <TopBar

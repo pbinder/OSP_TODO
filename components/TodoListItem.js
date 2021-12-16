@@ -90,7 +90,6 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
     };
 
     const deleteSelectedItems = () => {
-        console.log(selectedItems)
         selectedItems.forEach(item => {
           db.collection('todos').doc(item.id).delete();
         })
@@ -118,15 +117,13 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                     { !task &&
                         <View>
                             <Text style={styles.label}>{item.name}</Text>
-                            <Text style={[styles.label, styles.dateText]}>due at {moment.unix(item.date.seconds).format('YYYY/MM/DD')} 
-                            at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
+                            <Text style={[styles.label, styles.dateText]}>due on {moment.unix(item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
                         </View>
                     }
                     { task &&
                     <View>
                         <Text style={ styles.labelCompleted }>{item.name}</Text>
-                        <Text style={[styles.labelCompleted, styles.dateText]}>due at {moment.unix(item.date.seconds).format('YYYY/MM/DD')} 
-                            at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
+                        <Text style={[styles.labelCompleted, styles.dateText]}>due on {moment.unix(item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
                     </View>
                     }
                 </View>
@@ -147,6 +144,16 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         <View>
         {isEdit &&         
         <View style={styles.deleteHeader}>
+            <Pressable
+                style={styles.button}
+                onPress={() => this.MultiSelectSortableFlatlist.SelectAll()}>
+                <Text style={styles.deleteText}>select all</Text>
+            </Pressable>
+            <Pressable
+                style={styles.button}
+                onPress={() => this.MultiSelectSortableFlatlist.DeselectAll()}>
+                <Text style={styles.deleteText}>deselect all</Text>
+            </Pressable>
             <Pressable
                 style={styles.button}
                 onPress={() => deleteSelectedItems()}>
@@ -176,6 +183,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         { isEdit &&
         <View style={styles.editList}>
             <MultiSelectSortableFlatlist
+            ref={MultiSelectSortableFlatlist => (this.MultiSelectSortableFlatlist = MultiSelectSortableFlatlist)}
             data={originalTaskItems}
             keyExtractor={(item, index) => `${index}`}
             renderItem={({item, index, selected}) => renderLabel(item, index, selected)}
@@ -337,7 +345,5 @@ const styles = StyleSheet.create({
         color:'#7E7E7E',
         fontWeight: '400',
         fontSize: 14,
-        
     } 
-
 });
