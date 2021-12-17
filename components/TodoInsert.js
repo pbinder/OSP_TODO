@@ -291,6 +291,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonModal: {
+    height: 40,
     marginLeft: 10,
     padding: 10,
     borderRadius: 20,
@@ -298,14 +299,19 @@ const styles = StyleSheet.create({
   buttonSubmit: {
     alignItems: 'center',
     width:'21%',
-    backgroundColor: '#2986cc',
+    backgroundColor: '#5cb85c',
     borderRadius: 8,
   },
   buttonCancel: {
     alignItems: 'center',
     width:'21%',
     borderRadius: 8,
-    backgroundColor: '#ee6c4d',
+    backgroundColor: '#d9534f',
+  },
+  textStyle: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   text: {
     color: '#fff',
