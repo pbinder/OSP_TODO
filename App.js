@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -88,7 +88,9 @@ function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Fragment>
+    <SafeAreaView style={{flex:0, backgroundColor: 'white'}}/>
+    <SafeAreaView style={[styles.container, {backgroundColor: '#00462A'}]}>
       <View style={styles.barcontainer} >
       <TopBar
         wingPageVisible={wingPageVisible} 
@@ -145,6 +147,7 @@ function App() {
        </View>
       </View>
     </SafeAreaView>
+    </Fragment>
   );
 };
 
@@ -174,14 +177,11 @@ const styles = StyleSheet.create({
   },
   list: {
     backgroundColor: '#00462A',
-    //borderTopStartRadius: 20,
-    //borderTopEndRadius: 20,
     flex: 3,
   },
   listWrapper: {
-    height: '100%',
+    height: '97%',
   },
-  
   input: {
     padding: 20,
     borderBottomColor: '#bbb',
