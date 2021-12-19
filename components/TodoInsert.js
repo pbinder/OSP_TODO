@@ -18,7 +18,7 @@ import Modal from 'react-native-modal';
 
 const windowW= Dimensions.get('window').width;
 
-export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, dateToEdit, noteToEdit, handleUpdateTask, isEdit}) {
+export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, dateToEdit, noteToEdit, handleUpdateTask, isEdit, setDateToEdit,setTimeToEdit,timeToEdit}) {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -26,22 +26,6 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   const [name, setName] = useState('');
   const [category, setCategory] = useState(Categories[0]);
   const [note, setNote] = useState('');
-
-  const editDate = Moment.unix(dateToEdit).local().format('2021/MM/DD').toString()
-  const editTime = Moment.unix(dateToEdit).local().format('hh:mm:ss').toString()
-
-  const onChangeDate = (event, selectedDate) => {
-    console.log(selectedDate)
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
-
-  const onChangeTime = (event, selectedTime) => {
-    const currentTime = selectedTime || time;
-    setShow(Platform.OS === 'ios');
-    setTime(currentTime);
-  };
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -57,7 +41,6 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   };
   
   const setTaskObject = () => {
-    console.log("time ", time)
     const task = {
       name: name, 
       date: time, 
@@ -67,15 +50,16 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
       duedate: date
     }
     handleAddTask(task);
+    setDate(new Date());
+    setTime(new Date());
     setName('');
     setNote('');
   };
 
   const updateTaskObject = () => {
-    console.log("time ", time)
     const task = {
         name: name, 
-        date: date, 
+        date: time, 
         category: category, 
         note: note,
         duedate: date
@@ -83,6 +67,10 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
     handleUpdateTask(task);
     setName('');
     setCategory(Categories[0]);
+    setDate(new Date());
+    setTime(new Date())
+    setDateToEdit(task.date);
+    setTimeToEdit(task.date);
     setNote('');
   };
 
@@ -121,24 +109,48 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 style={styles.datepicker} 
                 editable={false}
                 placeholder={'Select date!'}  
-                onPress={showDatepicker} >
+                onPress={showDatepicker} > 
                   {!willEdit &&
-                  Moment(date).format('YYYY/MM/DD')}
+                    Moment(date).format('YYYY/MM/DD')
+                  }
                   {willEdit &&
-                  editDate}
+                    Moment(dateToEdit).format('YYYY/MM/DD')
+                  }
                </Text>
               
-              {show && (
+              {!willEdit && (show && (
                 <DateTimePicker
                 style={{width:'25%', marginLeft: '5.5%'}}
-                value={new Date()}
+                value={date}
                 mode={Platform.OS==='ios'?'date':mode}
                 is24Hour={true}
                 minimumDate={new Date()}
                 display="default"
-                onChange={onChangeDate}
+                onChange={(event, selectedDate) => {
+                  const currentDate = selectedDate || date;
+                  setShow(Platform.OS === 'ios');
+                  setDate(currentDate);
+                  setDateToEdit(currentDate)
+                }}
                 />
-              )}
+              ))}
+
+              {willEdit && (show && (
+                <DateTimePicker
+                style={{width:'25%', marginLeft: '5.5%'}}
+                value={dateToEdit}
+                mode={Platform.OS==='ios'?'date':mode}
+                is24Hour={true}
+                minimumDate={new Date()}
+                display="default"
+                onChange={(event, selectedDate) => {
+                  const currentDate = selectedDate || date;
+                  setShow(Platform.OS === 'ios');
+                  setDate(currentDate);
+                  setDateToEdit(currentDate)
+                }}
+                />
+              ))}
                 </View>
 
             <View style={styles.dateStyle}>
@@ -152,12 +164,12 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 placeholder={'Select time!'}  
                 onPress={showTimepicker} >
                   {!willEdit &&
-                  Moment(date).format('hh:mm:ss')}
+                  Moment(time).format('hh:mm:ss')}
                   {willEdit &&
-                  editTime}
+                  Moment(timeToEdit).format('hh:mm:ss')}
                </Text> 
          
-              {show && (
+              {!willEdit && (show && (
                 <DateTimePicker
                 style={{width:'33%'}}
                 value={date}
@@ -165,9 +177,31 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 is24Hour={true}
                 minimumDate={new Date()}
                 display="default"
-                onChange={onChangeTime}
+                onChange={(event, selectedTime) => {
+                  const currentTime = selectedTime || time;
+                  setShow(Platform.OS === 'ios');
+                  setTime(currentTime);
+                  setTimeToEdit(currentTime);
+                }}
                 />
-              )}
+              ))}
+
+            {willEdit && (show && (
+                <DateTimePicker
+                style={{width:'33%'}}
+                value={timeToEdit}
+                mode={Platform.OS==='ios'?'time':mode}
+                is24Hour={true}
+                minimumDate={new Date()}
+                display="default"
+                onChange={(event, selectedTime) => {
+                  const currentTime = selectedTime || time;
+                  setShow(Platform.OS === 'ios');
+                  setTime(currentTime);
+                  setTimeToEdit(currentTime);
+                }}
+                />
+              ))}
             
               </View>
                 {!willEdit &&
@@ -233,7 +267,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
               <View style={styles.buttonsWrapper}>
               <Pressable
                   style={[styles.buttonModal, styles.buttonCancel]}
-                  onPress={() => {setWillEdit(!willEdit), setModalVisible(!modalVisible)}}
+                  onPress={() => {setShow(false),setWillEdit(!willEdit), setModalVisible(!modalVisible), setDate(new Date()),setTime(new Date())}}
                 >
                   <Text style={styles.textStyle}>Cancel</Text>
                 </Pressable>
