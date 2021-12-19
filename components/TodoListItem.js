@@ -31,13 +31,14 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         let tempArr = taskItems.map(item => {
             if (item.id == task.id) {
                 task.completed = !task.completed;
-                /*db.collection('todos').doc(task.id).update({
-                    completed: task.completed
-                });*/
+                //db.collection('todos').doc(task.id).update({
+                //    completed: task.completed
+                //});
             }
             return item
         })
         setTaskItems(tempArr);
+        setOriginalTaskItems(tempArr);
     };
 
     const renderItem = data => (

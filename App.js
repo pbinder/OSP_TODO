@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Fragment} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,7 +13,6 @@ import Search from './components/Search';
 import db from './firebase';
 import firebase from 'firebase';
 import SortAs from './components/SortAs';
-import Moment from 'moment';
 
 function App() {
   //displayed taskitems updated on sort or filtering
