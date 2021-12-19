@@ -126,11 +126,11 @@ function App() {
           willEdit={willEdit}
           setWillEdit={setWillEdit}
           nameToEdit={nameToEdit}
-          dateToEdit={dateToEdit}
           categToEdit={categToEdit}
           noteToEdit={noteToEdit}
           handleUpdateTask={handleUpdateTask}
           isEdit={isEdit}
+          dateToEdit={dateToEdit}
           setDateToEdit={setDateToEdit}
           setTimeToEdit={setTimeToEdit}
           timeToEdit={timeToEdit}
