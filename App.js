@@ -13,6 +13,7 @@ import Search from './components/Search';
 import db from './firebase';
 import firebase from 'firebase';
 import SortAs from './components/SortAs';
+import Moment from 'moment';
 
 function App() {
   //displayed taskitems updated on sort or filtering
@@ -35,6 +36,7 @@ function App() {
   const [idToEdit, setIdToEdit] = useState('');
   const [nameToEdit, setNameToEdit] = useState('');
   const [dateToEdit, setDateToEdit] = useState('');
+  const [timeToEdit, setTimeToEdit] = useState('');
   const [categToEdit, setCategToEdit] = useState('');
   const [noteToEdit, setNoteToEdit] = useState('');
   const [percentage,setPercentage]=useState(0);
@@ -72,7 +74,8 @@ function App() {
   const dataToEdit = (data) => {
     setIdToEdit(data.id);
     setNameToEdit(data.name);
-    setDateToEdit(data.date);
+    setDateToEdit((data.date).toDate());
+    setTimeToEdit((data.date).toDate());
     setCategToEdit(data.category);
     setNoteToEdit(data.note);
   }
@@ -128,6 +131,9 @@ function App() {
           noteToEdit={noteToEdit}
           handleUpdateTask={handleUpdateTask}
           isEdit={isEdit}
+          setDateToEdit={setDateToEdit}
+          setTimeToEdit={setTimeToEdit}
+          timeToEdit={timeToEdit}
         > 
         </TodoInsert>
         <SortAs taskItems={taskItems} setTaskItems={setTaskItems} originalTaskItems={originalTaskItems}></SortAs>

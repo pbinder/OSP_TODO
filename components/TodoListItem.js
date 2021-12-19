@@ -11,6 +11,7 @@ import {
 import db from '../firebase';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import moment from 'moment';
+import Moment from 'moment';
 import MultiSelectSortableFlatlist from 'react-native-multiselect-sortable-flatlist';
 import { CheckBox } from 'react-native-elements';
 
@@ -125,7 +126,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                     checked={selected}/>
                     { !task &&
                         <View>
-                            <Text style={styles.label}>{item.name}</Text>
+                            <Text style={[styles.label, {marginBottom: -5}]}>{item.name}</Text>
                             <Text style={[styles.label, styles.dateText]}>due on {moment.unix(item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
                         </View>
                     }
@@ -235,8 +236,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'wrap',
-        marginLeft: 25,
-        marginRight: 15,
+        marginLeft: 35,
+        marginRight: 10,
     },
     button: {
         paddingLeft: 15,
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
     },
     aligner: {
         alignItems: 'flex-start',
-        marginLeft: -12
+        marginLeft: -8
     },
     colored: {
         backgroundColor: 'lightgrey'
@@ -302,15 +303,15 @@ const styles = StyleSheet.create({
         marginLeft: 25,
     },    
     label: {
-        paddingLeft: 25,
+        paddingLeft: 15,
         fontWeight: '500',
-        fontSize: 16,
+        fontSize: 17,
         paddingTop: 6
     },
     labelCompleted:{
-        paddingLeft: 25,
+        paddingLeft: 15,
         fontWeight: '500',
-        fontSize: 16,
+        fontSize: 17,
         textDecorationLine: 'line-through',
         color:'#8EBEBE',
         paddingTop: 6
@@ -340,7 +341,7 @@ const styles = StyleSheet.create({
     },
     dateText: {
         fontWeight: '400',
-        fontSize: 14,
+        fontSize: 15,
     } ,
     completedDateText: {
         color:'#8EBEBE',
