@@ -78,6 +78,8 @@ function App() {
   }
 
   const handleUpdateTask = (task) => {
+    if(task.name!=nameToEdit && task.name.length<1) task.name = nameToEdit
+    if(task.name!=noteToEdit && task.note.length<1) task.note = noteToEdit
     db.collection('todos').doc(idToEdit).set({
       name: task.name,
       date: task.date,
@@ -88,8 +90,6 @@ function App() {
   }
 
   return (
-    <Fragment>
-    <SafeAreaView style={{flex:0, backgroundColor: 'white'}}/>
     <SafeAreaView style={[styles.container, {backgroundColor: '#00462A'}]}>
       <View style={styles.barcontainer} >
       <TopBar
@@ -115,7 +115,7 @@ function App() {
         <Search originalTaskItems={originalTaskItems} setTaskItems={setTaskItems}></Search>
       </View>
       <View style={styles.list}>
-        <View style={styles.bar}>
+      {!isEdit &&  <View style={styles.bar}>
         <TodoInsert 
           modalVisible={modalVisible} 
           setModalVisible={setModalVisible}
@@ -127,10 +127,11 @@ function App() {
           categToEdit={categToEdit}
           noteToEdit={noteToEdit}
           handleUpdateTask={handleUpdateTask}
+          isEdit={isEdit}
         > 
         </TodoInsert>
         <SortAs taskItems={taskItems} setTaskItems={setTaskItems} originalTaskItems={originalTaskItems}></SortAs>
-        </View>
+        </View>}
         <View style={styles.listWrapper}>
           <TodoListItem 
             taskItems={taskItems} 
@@ -147,7 +148,6 @@ function App() {
        </View>
       </View>
     </SafeAreaView>
-    </Fragment>
   );
 };
 
