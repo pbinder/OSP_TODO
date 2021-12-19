@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
+  Dimensions
 } from 'react-native';
 import { Categories } from './constants/Categories';
 import Moment from 'moment';
@@ -14,6 +15,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Modal from 'react-native-modal';
+
+const windowW= Dimensions.get('window').width;
 
 export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTask, willEdit, setWillEdit, nameToEdit, categToEdit, dateToEdit, noteToEdit, handleUpdateTask, isEdit}) {
   const [date, setDate] = useState(new Date());
@@ -319,13 +322,13 @@ const styles = StyleSheet.create({
   },
   buttonSubmit: {
     alignItems: 'center',
-    width:'21%',
+    width: windowW*0.2,
     backgroundColor: '#5cb85c',
     borderRadius: 8,
   },
   buttonCancel: {
     alignItems: 'center',
-    width:'21%',
+    width: windowW*0.2,
     borderRadius: 8,
     backgroundColor: '#d9534f',
   },
