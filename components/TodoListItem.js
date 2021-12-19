@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
     StyleSheet,
     Text,
@@ -18,6 +18,8 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
     
     LogBox.ignoreAllLogs();
     LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
+    const multiSelectSortList = useRef();
+
     const [selectedItems, setSelectedItems] = useState([]);
 
     const onRowDidOpen = rowKey => {
@@ -43,8 +45,15 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
             style={styles.rowFront}
             underlayColor={'#AAA'}>
             <View style={styles.subcontainer}>
-                <View style={styles.itemLeft}>
+                <View style={styles.itemLeft}> 
+                { data.item.completed && 
+                    <TouchableOpacity style={[styles.circle, { justifyContent: 'center'}]} onPress={() => completeTask(data.item)}>
+                        <Text style={{fontWeight: 'bold', alignSelf: 'center', color: '#C0C0C0' }}>✓</Text>
+                    </TouchableOpacity>
+                }
+                { !data.item.completed && 
                     <TouchableOpacity style={styles.circle} onPress={() => completeTask(data.item)}></TouchableOpacity>
+                }
                 </View>
                 <View >
                     { !data.item.completed && 
@@ -56,13 +65,13 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                             else return data.item.note+'  ' ;
                              })()}
                             </Text>
-                            <Text style={styles.dateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
+                            <Text style={styles.dateText}>due on {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                         </View>
                       }
                     { data.item.completed &&
                         <View style={styles.labelContainer}>
                             <Text style={styles.completedTaskText}>{data.item.name} </Text>
-                            <Text style={styles.completedDateText}>due at {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
+                            <Text style={styles.completedDateText}>due on {moment.unix(data.item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(data.item.date.seconds).format('HH:mm')} </Text>
                         </View>
                     }
                 </View>
@@ -101,18 +110,18 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         })
     };
 
-    const renderLabel = (item,index,selected) => {
+    const renderLabel = ( item, index, selected, drag, dragEnd, reverseSelection) => {
         let task; 
         taskItems.map(data => {
             if (data.name === item.name) task = data.completed;
             return data.completed
         });
         return (
-            //style={selected ? [styles.rowFront, styles.aligner, styles.colored] : [styles.rowFront, styles.aligner]
-            <View style={[styles.rowFront, styles.aligner]}>
+            <TouchableHighlight style={[styles.rowFront, styles.aligner]}  onLongPress={() => drag()}
+            onPressOut={() => dragEnd()} underlayColor={'#AAA'}>
                 <View style={styles.order}>
                     <CheckBox
-                    disabled
+                    onPress={() => reverseSelection()}
                     checked={selected}/>
                     { !task &&
                         <View>
@@ -127,7 +136,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                     </View>
                     }
                 </View>
-            </View> 
+            </TouchableHighlight> 
         )
       }
 
@@ -146,12 +155,12 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         <View style={styles.deleteHeader}>
             <Pressable
                 style={styles.button}
-                onPress={() => this.MultiSelectSortableFlatlist.SelectAll()}>
+                onPress={() => multiSelectSortList.current.SelectAll()}>
                 <Text style={styles.deleteText}>select all</Text>
             </Pressable>
             <Pressable
                 style={styles.button}
-                onPress={() => this.MultiSelectSortableFlatlist.DeselectAll()}>
+                onPress={() => multiSelectSortList.current.DeselectAll()}>
                 <Text style={styles.deleteText}>deselect all</Text>
             </Pressable>
             <Pressable
@@ -183,10 +192,11 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
         { isEdit &&
         <View style={styles.editList}>
             <MultiSelectSortableFlatlist
-            ref={MultiSelectSortableFlatlist => (this.MultiSelectSortableFlatlist = MultiSelectSortableFlatlist)}
+            ref={multiSelectSortList}
             data={originalTaskItems}
             keyExtractor={(item, index) => `${index}`}
-            renderItem={({item, index, selected}) => renderLabel(item, index, selected)}
+            mode="manual"
+            renderItem={({ item, index, selected, drag, dragEnd, reverseSelection}) => renderLabel( item, index, selected, drag, dragEnd, reverseSelection)}
             onItemSelected={({ selectedItems, item, index }) => onSelectionChanged(selectedItems)}
             onItemDeselected={({ selectedItems, item, index }) => onSelectionChanged(selectedItems)}
             onSort={data => onSort(data)}/>
@@ -198,7 +208,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
 
 const styles = StyleSheet.create({
     editList: {
-        height: '85.5%',
+        height: '87.5%',
         marginLeft: 10,
         marginRight: 10,
     },
@@ -211,7 +221,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        
         paddingLeft: 10,
     },
     multiSelectContainer: {
@@ -236,7 +245,8 @@ const styles = StyleSheet.create({
     circle: {
         width: 24,
         height: 24,
-        backgroundColor: '#C0C0C0',
+        borderWidth: 2.2,
+        borderColor: '#C0C0C0',
         borderRadius: 15,
     },
     backTextWhite: {
@@ -253,7 +263,8 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
     },
     aligner: {
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginLeft: -12
     },
     colored: {
         backgroundColor: 'lightgrey'
@@ -311,7 +322,9 @@ const styles = StyleSheet.create({
     },
     deleteHeader: {
         flexDirection: 'row',
-        paddingBottom: 10
+        paddingBottom: 13,
+        justifyContent: 'flex-start',
+        paddingTop: 13,
     },
     deleteText: {
         fontSize: 15,

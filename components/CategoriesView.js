@@ -4,8 +4,6 @@ import ProgressCircle from 'react-native-progress-circle';
 import { Categories } from './constants/Categories';
 import SelectDropdown from 'react-native-select-dropdown'
 
-
-
 export default function CategoriesView ({isEdit, originalTaskItems, setTaskItems, setPercentage, percentage}) {
     const [incompleteSelect, setIncomplete] = useState(false);
     const [completeSelect, setComplete] = useState(false);
@@ -279,7 +277,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     activeBox:{
-        borderColor: 'blue',
+        borderColor: '#0096FF',
         borderRadius: 20,
         borderWidth: 1,
     },
