@@ -51,6 +51,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
     }
     handleAddTask(task);
     setDate(new Date());
+    setTime(new Date());
     setName('');
     setNote('');
   };
@@ -58,7 +59,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
   const updateTaskObject = () => {
     const task = {
         name: name, 
-        date: date, 
+        date: time, 
         category: category, 
         note: note,
         duedate: date
@@ -67,6 +68,9 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
     setName('');
     setCategory(Categories[0]);
     setDate(new Date());
+    setTime(new Date())
+    setDateToEdit(task.date);
+    setTimeToEdit(task.date);
     setNote('');
   };
 
@@ -107,9 +111,11 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 placeholder={'Select date!'}  
                 onPress={showDatepicker} > 
                   {!willEdit &&
-                  Moment(date).format('YYYY/MM/DD')}
+                    Moment(date).format('YYYY/MM/DD')
+                  }
                   {willEdit &&
-                  Moment(dateToEdit).format('YYYY/MM/DD')}
+                    Moment(dateToEdit).format('YYYY/MM/DD')
+                  }
                </Text>
               
               {!willEdit && (show && (
@@ -121,10 +127,10 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 minimumDate={new Date()}
                 display="default"
                 onChange={(event, selectedDate) => {
-                  console.log('not edit date ',selectedDate)
                   const currentDate = selectedDate || date;
                   setShow(Platform.OS === 'ios');
                   setDate(currentDate);
+                  setDateToEdit(currentDate)
                 }}
                 />
               ))}
@@ -138,7 +144,6 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 minimumDate={new Date()}
                 display="default"
                 onChange={(event, selectedDate) => {
-                  console.log('edit date ',selectedDate)
                   const currentDate = selectedDate || date;
                   setShow(Platform.OS === 'ios');
                   setDate(currentDate);
@@ -173,10 +178,10 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 minimumDate={new Date()}
                 display="default"
                 onChange={(event, selectedTime) => {
-                  console.log('selectedTime', selectedTime)
                   const currentTime = selectedTime || time;
                   setShow(Platform.OS === 'ios');
                   setTime(currentTime);
+                  setTimeToEdit(currentTime);
                 }}
                 />
               ))}
@@ -190,7 +195,6 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
                 minimumDate={new Date()}
                 display="default"
                 onChange={(event, selectedTime) => {
-                  console.log('selectedTime', selectedTime)
                   const currentTime = selectedTime || time;
                   setShow(Platform.OS === 'ios');
                   setTime(currentTime);
@@ -263,7 +267,7 @@ export default function TodoInsert  ({modalVisible, setModalVisible, handleAddTa
               <View style={styles.buttonsWrapper}>
               <Pressable
                   style={[styles.buttonModal, styles.buttonCancel]}
-                  onPress={() => {setShow(false),setWillEdit(!willEdit), setModalVisible(!modalVisible)}}
+                  onPress={() => {setShow(false),setWillEdit(!willEdit), setModalVisible(!modalVisible), setDate(new Date()),setTime(new Date())}}
                 >
                   <Text style={styles.textStyle}>Cancel</Text>
                 </Pressable>

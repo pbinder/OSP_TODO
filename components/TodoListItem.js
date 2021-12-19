@@ -126,7 +126,7 @@ export default function TodoListItem({taskItems, isEdit, setTaskItems, setModalV
                     checked={selected}/>
                     { !task &&
                         <View>
-                            <Text style={[styles.label, {marginBottom: -5}]}>{item.name}</Text>
+                            <Text style={[styles.label, {marginBottom: -5, marginTop: 4}]}>{item.name}</Text>
                             <Text style={[styles.label, styles.dateText]}>due on {moment.unix(item.date.seconds).format('YYYY/MM/DD')} at {moment.unix(item.date.seconds).format('HH:mm')}</Text>
                         </View>
                     }
